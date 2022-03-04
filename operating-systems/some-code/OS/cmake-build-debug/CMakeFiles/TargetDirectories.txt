@@ -1,0 +1,3 @@
+/home/amirphl/ClionProjects/OS/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/amirphl/ClionProjects/OS/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/amirphl/ClionProjects/OS/cmake-build-debug/CMakeFiles/OS.dir
