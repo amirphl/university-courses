@@ -1,0 +1,50 @@
+#include <avr\io.h>
+#include <avr\interrupt.h>
+
+#include <util\delay.h>
+
+volatile char numbers[] = {0x3f, 0x30, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f};
+
+volatile char current_index = 0;
+volatile  char running = 0;
+
+
+
+ISR(INT1_vect) {
+	current_index = 5;
+    }
+
+
+
+ISR(INT0_vect){
+	running ^= 0x1;	
+	}
+
+
+
+void print_segment(char index) {
+	PORTB = ~(numbers[index]);
+}
+
+
+int main(){
+	
+	DDRB = 0xFF;
+	DDRD = 0x80;
+	PORTD &= ~(0x80);
+	PORTD = (1<<2) | (1<<3);
+	GICR |= 0xC0;
+	MCUCR |= 0x0A;
+
+	
+	sei();
+	while(1){
+		while(running){
+			current_index = (current_index == 10) ? 0 : (current_index + 1);
+			print_segment(current_index);
+			_delay_ms(500);
+		}
+	}
+ 	return 0 ;	
+}
+

@@ -1,0 +1,198 @@
+
+#include <avr\io.h>
+#include <avr\interrupt.h>
+#include <util\delay.h>
+
+
+volatile int currentRow = 1;
+volatile int column = 1;
+void nextPin();
+void print_segment(char num);
+volatile int OCR0_def;
+
+int main() {
+	DDRC |= (1 << PC4) | (1 << PC5) | (1 << PC6) | (1 << PC7);
+	PORTC |= 0xFF;
+	
+	PORTD |= (1 << PD2);
+	DDRB = (1 << PB0) | (1 << PB3);
+	
+	TCCR0 = (1 << CS00) | (1 << CS02) | (1 << WGM01) | (1 << WGM00) | (1 << COM00) | (1 << COM01);
+	
+	//TCCR0 = (1 << CS00) | (1 << CS02) | (1 << WGM01) | (1 << COM00);
+
+
+	sei();
+	
+	GICR |= (1 << INT0);
+	MCUCR |= (1 << ISC01);
+	
+	OCR0_def = 256;
+	OCR0 = OCR0_def;
+	
+	while(1){
+		nextPin();
+	}
+	
+	return 0;
+}
+
+
+void nextPin(){
+	PORTC &= ~(1 << PC4) & ~(1 << PC5) & ~(1 << PC6) & ~(1 << PC7);
+	switch(currentRow){
+		case 1 :
+			PORTC |= (1 << PC4);
+			break;
+			
+		case 2 :
+			PORTC |= (1 << PC5);
+			break;
+			
+		case 3 :
+			PORTC |= (1 << PC6);
+			break;
+			
+		case 4 :
+			PORTC |= (1 << PC7);
+			break;
+	}
+	currentRow %= 4;
+	currentRow++;
+}
+
+ISR(INT0_vect){
+	if((~PINC & (1 << PC1))){
+		column = 1;
+	}else if((~PINC & (1 << PC2))){
+		column = 2;
+	}else if((~PINC & (1 << PC3))){
+		column = 3;
+	}
+	int number = 0;
+	switch(currentRow){
+		case 1 :
+			switch(column){
+				case 1 :
+					number = 0;
+					break;
+					
+				case 2 :
+					number = 0;
+					break;
+					
+				case 3 :
+					number = 0;
+					break;
+			}
+			break;
+			
+		case 2 :
+			switch(column){
+				case 1 :
+					number = 1;
+					break;
+					
+				case 2 :
+					number = 2;
+					break;
+					
+				case 3 :
+					number = 3;
+					break;
+			}
+			break;
+			
+		case 3 :
+			switch(column){
+				case 1 :
+					number = 4;
+					break;
+					
+				case 2 :
+					number = 5;
+					break;
+					
+				case 3 :
+					number = 6;
+					break;
+			}
+			break;
+			
+		case 4 :
+			switch(column){
+				case 1 :
+					number = 7;
+					break;
+					
+				case 2 :
+					number = 8;
+					break;
+					
+				case 3 :
+					number = 9;
+					break;
+			}
+			break;
+	}
+	print_segment(number);
+}
+
+void print_segment(char num) {
+	if (num == 0) {
+		//PORTB = hgfedcba;
+		PORTB = 0b11000000;
+		//OCR0 = 0;
+	}
+	if (num == 1) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b11111001;
+		OCR0 = (OCR0_def / 10);
+	}
+	if (num == 2) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10100100;
+		OCR0 = (OCR0_def / 10) * 2;
+	}
+	if (num == 3) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10110000;
+		OCR0 = (OCR0_def / 10) * 3;
+	}
+	if (num == 4) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10011001;
+		OCR0 = (OCR0_def / 10) * 4;
+	}
+	if (num == 5) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10010010;
+		OCR0 = (OCR0_def / 10) * 5;
+	}
+	if (num == 6) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10000010;
+		OCR0 = (OCR0_def / 10) * 6;
+	}
+	if (num == 7) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b11111000;
+		OCR0 = (OCR0_def / 10) * 7;
+	}
+	if (num == 8) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10000000;
+		OCR0 = (OCR0_def / 10) * 8;
+	}
+	if (num == 9) {
+		//PORTB = hgfedcba;
+		//PORTB = 0b10010000;
+		OCR0 = (OCR0_def / 10) * 9;
+	}
+	if (num == '-') {
+		//PORTB = 0b01111111;
+	}
+	//OCR0 = OCR0_def;
+}
+
+

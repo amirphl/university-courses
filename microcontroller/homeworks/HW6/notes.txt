@@ -1,0 +1,21 @@
+تیکه زیر مشکل ایجاد کرد
+
+
+;interrupt setup
+	ldi r16,(1<<IVCE)
+	out GICR,r16
+	ldi r16,(0<<IVSEL)
+	out GICR,r16
+
+	ldi r16,(1<<ISC00)
+	out MCUCR,r16
+	ldi r16,(0<<ISC01)
+	out MCUCR,r16
+	ldi r16,(1<<ISC10)
+	out MCUCR,r16
+	ldi r16,(1<<ISC11)
+	out MCUCR,r16
+	
+	
+	
+اصلا چرا این کد کار میکند؟

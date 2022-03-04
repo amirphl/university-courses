@@ -1,0 +1,13 @@
+resistor
+button
+micro
+220 ohm
+5 volt
+وصل کردن غیر مستفیم سیم ها به هم
+انتخاب فایل حاصل از atmel و فرار دادن آن در protues
+vcc , gnd رو حتما وصل کن
+quera
+prob
+.pdsprg + .asm
+قسمت تیوری و اتمل و پرو جدا
+.pdf

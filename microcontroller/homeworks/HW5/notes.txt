@@ -1,0 +1,5 @@
+pull up INT0 and INT1 for disabling initial interrupt.
+keys configurations magics
+segments sizes overlap with each other
+brne is not equal with brnq
+sbrc R,b; b is (i+1)th entry in register
