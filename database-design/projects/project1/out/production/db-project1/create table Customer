@@ -1,0 +1,12 @@
+create table Customer (
+  ID        INT(15)      NOT NULL auto_increment,
+  Email     VARCHAR(100) NOT NULL,
+  Password  INT(15)      NOT NULL,
+  FirstName VARCHAR(50)  NOT NULL,
+  LastName  VARCHAR(50)  NOT NULL,
+  Sex       ENUM('Male' , 'Female'),
+  Credit    INT(15)      NOT NULL,
+  CallPhone CHAR(10)     NOT NULL,
+  Address   VARCHAR(100) NOT NULL,
+  PRIMARY KEY (id)
+)

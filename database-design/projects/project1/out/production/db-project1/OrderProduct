@@ -1,0 +1,8 @@
+create table OrderProduct (
+  OrderID   INT(15) NOT NULL,
+  ProductID INT(15) NOT NULL,
+  Amount    INT(10) NOT NULL,
+  PRIMARY KEY (ProductID, OrderID),
+  FOREIGN KEY (ProductID) REFERENCES Product (ID),
+  FOREIGN KEY (OrderID) REFERENCES Orders (ID)
+)

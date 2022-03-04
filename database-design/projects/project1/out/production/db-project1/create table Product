@@ -1,0 +1,6 @@
+create table Product (
+  ID    INT(15)     NOT NULL auto_increment,
+  Title VARCHAR(50) NOT NULL,
+  Price INT(20)     NOT NULL,
+  PRIMARY KEY (ID)
+);

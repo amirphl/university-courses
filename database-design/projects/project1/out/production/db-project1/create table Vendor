@@ -1,0 +1,10 @@
+create table Vendor (
+  ID        INT(15)      NOT NULL auto_increment,
+  Title     VARCHAR(50)  NOT NULL,
+  City      VARCHAR(50)  NOT NULL,
+  ManagerID INT(15)      NOT NULL,
+  Phone     CHAR(10)     NOT NULL,
+  Address   VARCHAR(100) NOT NULL,
+  PRIMARY KEY (ID, ManagerID),
+  FOREIGN KEY (ManagerID) REFERENCES Manager (ID)
+)

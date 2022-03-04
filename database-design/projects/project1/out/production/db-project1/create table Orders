@@ -1,0 +1,12 @@
+create table Orders (
+  ID              INT(15)                         NOT NULL auto_increment,
+  VendorID        INT(15)                         NOT NULL,
+  CustomerID      INT(15)                         NOT NULL,
+  Status          ENUM ('Sabt', 'Peyk', 'Tahvil') NOT NULL,
+  PaymentType     ENUM ('DameDar', 'Bank')        NOT NULL,
+  CreatedAt       TIMESTAMP                       NOT NULL,
+  DeliveryAddress VARCHAR(100)                    NOT NULL,
+  PRIMARY KEY (ID, VendorID, CustomerID),
+  FOREIGN KEY (VendorID) REFERENCES Vendor (ID),
+  FOREIGN KEY (CustomerID) REFERENCES Customer (ID)
+)

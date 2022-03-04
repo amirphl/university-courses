@@ -1,0 +1,8 @@
+create table VendorProduct (
+  VendorID  INT(15) NOT NULL,
+  ProductID INT(15) NOT NULL,
+  Amount    INT(10) NOT NULL,
+  PRIMARY KEY (ProductID, VendorID),
+  FOREIGN KEY (ProductID) REFERENCES Product (ID),
+  FOREIGN KEY (VendorID) REFERENCES Vendor (ID)
+)
