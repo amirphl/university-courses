@@ -1,4 +1,4 @@
 ## TODO
-- exam samples
-- my exam solutions
-- homeworks
+- resolve exam samples
+- resolve my exams (midterm and final)
+- complete homeworks and the reference book
