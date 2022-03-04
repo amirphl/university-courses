@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Simple Login</title>
+</head>
+<body style="background-color: #d0e1e4;display:flex; flex-direction: column;align-items: center;justify-content:center;padding: 20px;">
+    <h1>
+Let's login!
+    </h1>
+    {% if not user.is_authenticated %}
+    <div>
+    Fill the fields:
+    </div>
+    {% endif %}
+    {% if not user.is_authenticated %}
+    <form action="/login/try_login/" method="POST">
+    {% csrf_token %}
+        <div style="padding: 10px;">
+            <input name="username" type="text" placeholder="username"/>
+        </div>
+        <div style="padding: 10px;">
+            <input name="password" type="password" placeholder="password"/>
+        </div>
+        {% if has_captcha %}
+            <div style="padding: 10px;">
+                <div id="captcha_section" style="background-color: yellow;color:black;text-align:center;padding-top:5px;padding-bottom:5px;">
+                    3
+                </div>
+                <input name="hidden_captcha" style="display: none;" id="captcha" value="3">
+            </div>
+            <div style="padding: 10px;">
+                <input name="captcha" type="text" placeholder="captcha"/>
+            </div>
+        {% endif %}
+        <div style="text-align:center;">
+            <button>
+                login
+            </button>
+        </div>
+        {% if has_error %}
+            <div style="background-color: #e02f2f;text-align:center;padding: 7px; margin-top:2px;">
+                Sth is wrong!
+            </div>
+        {% endif %}
+    </form>
+    {% else %}
+     <div style="background-color: #3eaf3e;padding: 10px;">
+        WOW! You're in heaven.
+     </div>
+     <div>
+        <form action="/login/logout">
+            <button>
+                logout
+            </button>
+        </form>
+     </div>
+    {% endif %}
+    
+    <div style="font-size:11px;padding: 20px;">
+    Quote of the day: 
+    <p id="quote">
+        May the force be with you!
+    </p>
+    </div>
+    <script>
+    var fresh_quote_id = parseInt(Math.random()*10)
+    var quotes = [
+        "May the Force be with you.",
+        "I'm going to make him an offer he can't refuse.",
+        "Bond. James Bond.",
+        "Hasta la vista, baby.",
+        "We'll always have Paris.",
+        "Mama always said life was like a box of chocolates. You never know what you're gonna get.",
+        "Hakuna matata.",
+        "Hodor.",
+        "Madness, as you know, is like gravity, all it takes is a little push(joker).",
+        "End is part of the journey.",
+    ]
+    document.getElementById('quote').innerHTML = quotes[fresh_quote_id];
+    {% if has_captcha %}
+        var captcha_val = parseInt(Math.random()*89999) + 10000;
+        document.getElementById('captcha').value = captcha_val;
+        document.getElementById('captcha_section').innerHTML = captcha_val;
+    {% endif %}
+    </script>
+</body>
+</html>
