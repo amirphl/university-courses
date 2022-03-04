@@ -1,0 +1,5 @@
+{
+    "eslint.enable": false,
+    "standard.enable": false,
+    "python.pythonPath": "E:\\softwares\\python\\python.exe"
+}
