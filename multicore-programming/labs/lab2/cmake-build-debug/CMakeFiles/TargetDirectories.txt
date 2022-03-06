@@ -1,0 +1,3 @@
+A:/mp/Multicore_Programming/cmake-build-debug/CMakeFiles/Multicore_Programming.dir
+A:/mp/Multicore_Programming/cmake-build-debug/CMakeFiles/edit_cache.dir
+A:/mp/Multicore_Programming/cmake-build-debug/CMakeFiles/rebuild_cache.dir

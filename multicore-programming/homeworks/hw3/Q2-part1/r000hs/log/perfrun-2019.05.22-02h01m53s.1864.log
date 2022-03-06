@@ -1,0 +1,194 @@
+140 [7388] INFO perfrun.launcher <> - Launcher main begin
+144 [7388] INFO perfrun.launcher <> - MessageCatalogInit finished
+144 [7388] INFO perfrun.launcher <> - Launcher instance created
+145 [7388] INFO perfrun.launcher <> - argc = 7; cmdline = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\amplxe-runss.exe --ui-output-format xml --ui-output-fd 3856 --option-file A:\mp\hw3\Q2-part1\r000hs\config\runss.options 
+185 [7388] INFO perfrun.launcher <> - New signal handler callback was added
+197 [7388] INFO perfrun.launcher <> - plugin system has been added successfully
+197 [7388] INFO perfrun.launcher <> - plugin itt has been added successfully
+197 [7388] INFO perfrun.launcher <> - plugin  has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin gpu has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin etw.kernel has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin etw.dx has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin etw.wsa has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin mrte has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin emon has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin cuscol has been added successfully
+198 [7388] INFO perfrun.launcher <> - plugin stdsrc has been added successfully
+199 [7388] INFO perfrun.launcher <> - plugin sep has been added successfully
+199 [7388] INFO perfrun.launcher <> - plugin vtsspp has been added successfully
+199 [7388] INFO perfrun.launcher <> - plugin  has been added successfully
+207 [7388] INFO perfrun.launcher <> - plugin tpss has been added successfully
+208 [7388] INFO perfrun.launcher <> - plugin exprof has been added successfully
+208 [7388] INFO perfrun.launcher <> - plugin  has been added successfully
+208 [7388] INFO perfrun.launcher <> - plugin  has been added successfully
+208 [7388] INFO perfrun.launcher <> - plugin  has been added successfully
+208 [7388] INFO perfrun.launcher <> - plugin  has been added successfully
+210 [7388] INFO perfrun.launcher <> - the option was added --interval: Specify an interval of data collection (for example, sampling) in milliseconds.
+210 [7388] INFO perfrun.launcher <> - the option was added --follow-child: Profile process with or without children.
+210 [7388] INFO perfrun.launcher <> - the option was added --gelding: BADMSG: perfrun1.launcher.plugin_manager::gelding
+210 [7388] INFO perfrun.launcher <> - the option was added --time-source: Specify time source for measurement. Possible values: sys - wall clock time; tsc - time stamp counter; ext - time from an external source; auto - auto select accurate time source.
+210 [7388] INFO perfrun.launcher <> - the option was added --stack: Enable or disable collection of stacks.
+211 [7388] INFO perfrun.launcher <> - the option was added --stack-stitching: Enable or disable the stack stitching algorithm for Intel TBB-based applications.
+211 [7388] INFO perfrun.launcher <> - the option was added --type: Specify type of data to be collected. For example, --type cpu:counters,waiting:nostack,io.
+211 [7388] INFO perfrun.launcher <> - the option was added --mrte-mode: Specify Java/.NET/other managed runtime collection mode. Possible values: native - collect information only for native code; managed - collect information only for managed code; mixed - collect information for both managed and native code; auto - choose the mode based on binary type.
+211 [7388] INFO perfrun.launcher <> - the option was added --mrte-mode-list: List supported Java/.NET/other managed runtime collection modes.
+211 [7388] INFO perfrun.launcher <> - the option was added --mrte-type: Specify which managed runtimes to collect. Possible values: java - collect information for Java; dotnet - collect information for .NET; python - collect information for CPython. You can specify several values separated by comma.
+211 [7388] INFO perfrun.launcher <> - the option was added --mrte-type-list: List supported Java/.NET/other managed runtime types.
+211 [7388] INFO perfrun.launcher <> - the option was added --trace-strategy: Specify how to profile a process tree. <string> can be "<process>:trace:notrace" - profile the process but do not profile its children. Shorthand parameters: t - trace, nt - notrace. For example, "vtunedemo.exe:t:t".
+211 [7388] INFO perfrun.launcher <> - the option was added --collector: BADMSG: perfrun1.launcher.plugin_manager::collector
+211 [7388] INFO perfrun.launcher <> - the option was added --system-wide: Enable system-wide profiling. This mode may require additional permissions.
+212 [7388] INFO perfrun.launcher <> - the option was added --kvm-guest: Enable KVM guest OS profiling.
+212 [7388] INFO perfrun.launcher <> - the option was added --kvm-guest-kallsyms: Specify a local path to the /proc/kallsyms file copied from the guest OS for proper symbol resolution.
+212 [7388] INFO perfrun.launcher <> - the option was added --kvm-guest-modules: Specify a local path to the /proc/modules file copied from the guest OS for proper symbol resolution.
+212 [7388] INFO perfrun.launcher <> - the option was added --bandwidth-limits: Measure bandwidth limits
+212 [7388] INFO perfrun.launcher <> - the option was added --bandwidth-strategy: Bandwidth limits determination specific properties (example: --bandwidth-strategy array-size=0,duration=500).
+212 [7388] INFO perfrun.launcher <> - the option was added --bandwidth-config: List of benchmarks to run.
+212 [7388] INFO perfrun.launcher <> - the option was added --system-collector-config: Specify subcollectors. Possible values: all, vdso, container, device-info, none.
+212 [7388] INFO perfrun.launcher <> - the option was added --itt-config: Specify a sub-set of ITT API to collect.
+212 [7388] INFO perfrun.launcher <> - the option was added --itt-debug: Set pseudo-breakpoint at ITT API collector's start to enable the debugger to attach early.
+213 [7388] INFO perfrun.launcher <> - the option was added --itt-ring-buffer-multiplier: The size of internal ITT API collector ring buffer, in bytes per second
+213 [7388] INFO perfrun.launcher <> - the option was added --gpu-config: Specify types of GPU data to be collected. Possible values: preset1, preset2.
+213 [7388] INFO perfrun.launcher <> - the option was added --gpu-debug: Enable self-testing of the GPGPU profiling collector.
+213 [7388] INFO perfrun.launcher <> - the option was added --etw-config: Enable advanced collection of GPU data.
+213 [7388] INFO perfrun.launcher <> - the option was added --custom-collector: Allows to provide arbitrary command line to be run on collection steps.
+213 [7388] INFO perfrun.launcher <> - the option was added --stdsrc-config: Specify Standard Sources category tag(s).
+213 [7388] INFO perfrun.launcher <> - the option was added --event-info: BADMSG: perfrun1.stdsrc::event-info
+213 [7388] INFO perfrun.launcher <> - the option was added --cpu-list: List supported CPUs.
+213 [7388] INFO perfrun.launcher <> - the option was added --target-list: List available targets for performing sampling collection.
+213 [7388] INFO perfrun.launcher <> - the option was added --event-value-list: Display event information.
+214 [7388] INFO perfrun.launcher <> - the option was added --platform-value-list: Display details of supported platforms.
+214 [7388] INFO perfrun.launcher <> - the option was added --uncore-event-list: List uncore events for which a sampling data collection can be performed on this platform.
+214 [7388] INFO perfrun.launcher <> - the option was added --modifier-list: Specify the event name <string> for which the modifiers list is requested.
+214 [7388] INFO perfrun.launcher <> - the option was added --pmu-list: List supported PMUs.
+214 [7388] INFO perfrun.launcher <> - the option was added --os-mode-only: Enable sampling data collection for OS-mode processes only.
+214 [7388] INFO perfrun.launcher <> - the option was added --user-mode-only: Enable sampling data collection for user-mode processes only.
+214 [7388] INFO perfrun.launcher <> - the option was added --event-config: Perform data collection for the events with <string> configured using the format <event name1>":modifier1=val:modifier2=val/constraint1={:modifier3=val:modifier4=val}...,"<event name2>":... Specify the events(s) to monitor and embed the event names within double quotes("). [:modifier=val] specifies individual event modifiers along with the respective values for a given platform. Note that the modifiers can be generic to an event as well as specific to a constraint (or an event qualifier). The constraint specific special modifiers appear after [/constraint=]. The modifiers can be in decimal or hexadecimal format. Only specific modifiers accept the value as a string. Each event specification is delimited by a comma (,). For a list of supported modifiers and constraints, refer to the documentation.
+214 [7388] INFO perfrun.launcher <> - the option was added --chipset-event-config: Perform data collection for the chipset events with <string> configured using the format "<event name1>"...,"<event name2>":... Specify the events(s) to monitor and embed the event names within double quotes(").
+215 [7388] INFO perfrun.launcher <> - the option was added --uncore-event-config: Perform uncore data collection in ebc count mode for the events with <string> configured using the format "<event name1>"...,"<event name2>":... Specify the events(s) to monitor and embed the event names within double quotes(").
+215 [7388] INFO perfrun.launcher <> - the option was added --count: Enable counting mode.
+215 [7388] INFO perfrun.launcher <> - the option was added --count-emon: Enable counting mode and output the data in EMON format.
+215 [7388] INFO perfrun.launcher <> - the option was added --event-based-counts: Enable event-based counting mode. During sampling data collection, event counts data is collected for the list of events specified in -event-config option.
+215 [7388] INFO perfrun.launcher <> - the option was added --event-mux-tfactor: Specify the event multiplexing tfactor as <integer> to set the length of the interval between interrupts. The larger the tfactor value, the larger the period between interrupts. Currently this option is only available on Intel platforms codenamed Knights Corner.
+215 [7388] INFO perfrun.launcher <> - the option was added --uncore-sampling-interval: Specify the uncore sampling interval as <integer>. This value set the uncore sampling interval for all the uncore events specified in -event-config option.
+215 [7388] INFO perfrun.launcher <> - the option was added --full-pebs-capture: Capture full pebs information.
+215 [7388] INFO perfrun.launcher <> - the option was added --last-branch-records: Capture Last Branch Records information.
+215 [7388] INFO perfrun.launcher <> - the option was added --pmu-type: Specify the targeted PMU name as <string>.
+215 [7388] INFO perfrun.launcher <> - the option was added --platform-type: Specify the targeted platform number as <number>.
+216 [7388] INFO perfrun.launcher <> - the option was added --p-state-trigger: Specify the name of the trigger event for P-state data as <string>. The default trigger is CPU_CLK_UNHALTED.REF_TSC.
+216 [7388] INFO perfrun.launcher <> - the option was added --bts-count: Specify the <integer> number of BTS records collected after each sample or context switch (VTSS++ only).
+216 [7388] INFO perfrun.launcher <> - the option was added --cpu-mask: Specify which CPU(s) <string> to collect data on. For example, specify "2-8,10,12-14" to sample only CPUs 2 through 8, 10, and 12 through 14.
+216 [7388] INFO perfrun.launcher <> - the option was added --event-mux-alg: Specify the event multiplexing algorithm. Possible values: sequence, timer, trigger.
+216 [7388] INFO perfrun.launcher <> - the option was added --event-mux-timeslice: Specify the event multiplexing time slice value as <integer>. The time slice specifies the duration between cycles for each event multiplexing group. The default value is 50 milliseconds. This option is valid only for timer-based event multiplexing. Specify the event multiplexing time slice value as <integer>. The time slice specifies the duration between cycles for each event multiplexing group. The default value is 1 millisecond. This option is valid only for timer-based event multiplexing.
+216 [7388] INFO perfrun.launcher <> - the option was added --event-mux-factor: Specify the event multiplexing factor as <integer>. It controls the switching of event multiplexing groups. The default factor is 50. This option is valid only for trigger-based event multiplexing. Specify the event multiplexing factor as <integer>. It controls the switching of event multiplexing groups. The default factor is 1. This option is valid only for trigger-based event multiplexing.
+216 [7388] INFO perfrun.launcher <> - the option was added --event-mux-trigger: Specify the name of the trigger event for event multiplexing as <string>. This option is valid only for trigger-based event multiplexing. The default trigger is CPU_CLK_UNHALTED.CORE (or CPU_CLK_UNHALTED.THREAD). BADMSG: perfrun1.vtsspp::event-mux-trigger
+216 [7388] INFO perfrun.launcher <> - the option was added --sample-after-multiplier: Specify the sample after multiplier as <double>. This multiplier modifies the sample after value for all the events specified in -event-config option. The values can range from 0.1 to 100.0.
+216 [7388] INFO perfrun.launcher <> - the option was added --pwr-config: BADMSG: perfrun1.vtsspp::pwr-config
+217 [7388] INFO perfrun.launcher <> - the option was added --sys-config: BADMSG: perfrun1.vtsspp::sys-config
+217 [7388] INFO perfrun.launcher <> - the option was added --pt-mode: BADMSG: perfrun1.vtsspp::pt-mode
+217 [7388] INFO perfrun.launcher <> - the option was added --stackwalk: Specify stack unwinding method. Possible value: lbr - unwind stacks during collection. Specify stack unwinding method. Possible values: online - unwind stacks during collection; offline - unwind stacks after collection is finished; lbr - enable LBR-based call stack collection. Specify stack unwinding method. Possible values: online - unwind stacks during collection; offline - unwind stacks after collection is finished.
+217 [7388] INFO perfrun.launcher <> - the option was added --filter-include: Filter data during collection. Possible values: contended=<on|off> - filter out uncontended events; contended_nostack=<time> - filter out stacks for contended events that take less than <time> microseconds; wait=<time> - ignore transitions and blocks with wait time less than <time> microseconds; wait_nostack=<time> - filter out stacks for waits that take less than <time> microseconds.
+217 [7388] INFO perfrun.launcher <> - the option was added --debug-pin: Debug PIN tool and runtime.
+217 [7388] INFO perfrun.launcher <> - the option was added --debug-exception: Disallow the application to set own abnormal termination handler.
+217 [7388] INFO perfrun.launcher <> - the option was added --trace-type: Specify the trace file granularity. Possible values: per-thread - per-thread trace file generation; per-process - per-process trace file generation.
+217 [7388] INFO perfrun.launcher <> - the option was added --instrumentation-type: Specify type of instrumentation.
+217 [7388] INFO perfrun.launcher <> - the option was added --guard-pulse-event: Enable handling of PulseEvent API in order not to miss signals made by the API during Hotspots collection.
+218 [7388] INFO perfrun.launcher <> - the option was added --memory-strategy: Specify a minimal memory object size to be traced and a hash table size for faster objects search; for example: --memory-strategy obj-size-min=1024,hash-table-size=4096.
+218 [7388] INFO perfrun.launcher <> - the option was added --gpu-profiling-config: Specify a type of deep GPU profiling applied for all kernels and a comma-separated list of GPU kernel names and invocations in the following format: profiling_type[@kernel_name[:start_idx:step:stop_idx]], where profiling_type is one of following: none, bblatency, memlatency; kernel_name is the name of GPU kernel; start_idx is the number of the first invocation; and stop_idx is the number of the last invocation to be profiled.
+218 [7388] INFO perfrun.launcher <> - the option was added --exprof-com-list: List available COM ports.
+218 [7388] INFO perfrun.launcher <> - the option was added --exprof-dvc-list: List available DvC IDs.
+218 [7388] INFO perfrun.launcher <> - the option was added --exprof-trace-channel: BADMSG: perfrun1.exprof::exprof-trace-channel
+218 [7388] INFO perfrun.launcher <> - the option was added --exprof-event-config: Specify ExactProfiling Event Classes.
+240 [7388] INFO perfrun.launcher <> - create msngr2::ICliToolContext
+241 [7388] WARN perfrun.launcher <> - The same value is already set for this option. This value is ignored., at file: C:\BB\INNLphep2w6r\b\b\tmp6petf1\vcs\perfrun1\launcher\src\configuration.cpp:808
+241 [7388] INFO perfrun.launcher <> - create file finder object
+253 [7388] INFO perfrun.launcher <> - create a result directory: pattern = A:\mp\hw3\Q2-part1\r000hs pid = 4294967295
+264 [7388] INFO perfrun.launcher <> - create data directory = A:\mp\hw3\Q2-part1\r000hs\data.0
+269 [7388] INFO perfrun.launcher <> - Creating the master collection flag
+281 [7388] INFO perfrun.launcher <> - Done creating the master collection flag
+329 [17136] INFO perfrun.sdk <> - Allocating TMU :A:\mp\hw3\Q2-part1\r000hs\data.0\systemcollector-1864-DESKTOP-50RSL8H.sc
+350 [17136] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+350 [17136] INFO perfrun.launcher <> - plugin [gpu] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [etw.kernel] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [etw.dx] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [etw.wsa] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [mrte] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [cuscol] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [stdsrc] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [sep] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [vtsspp] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+351 [17136] INFO perfrun.tpss <> - initialize tpss controller
+352 [17136] INFO perfrun.tpss <> - configure collection mode: value = cpu:counters:nostack
+352 [17136] INFO perfrun.tpss <> - configure collection mode: value = cpu:stack
+352 [17136] INFO perfrun.tpss <> - default obj-size-min=1024
+352 [17136] INFO perfrun.tpss <> - default hash-table-size=0
+383 [17136] INFO perfrun.launcher <> - plugin [exprof] was disabled because it doesn't support the given collection type.
+383 [17136] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+383 [17136] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+383 [17136] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+383 [17136] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+383 [7388] INFO perfrun.launcher <> - set environment variable: PATH = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin32\runtime;C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\runtime;A:\softwares\python3.6\;A:\softwares\python3.6\Scripts\;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.1\libnvvp;C:\Program Files (x86)\IntelSWTools\compilers_and_libraries_2019.0.117\windows\mpi\intel64\bin;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\mpirt;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\mpirt;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64_win\compiler;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\ia32_win\compiler;C:\ProgramData\Oracle\Java\javapath;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 & MySQL Utilities 1.5\;C:\Program Files (x86)\MySQL\MySQL Fabric 1.5 & MySQL Utilities 1.5\Doctrine extensions for PHP\;C:\Users\amirphl\AppData\Local\Programs\MiKTeX 2.9\miktex\bin\x64;C:\opencv\mingw-build\install\x86\mingw\bin;C:\Program Files (x86)\mingw-w64\i686-8.1.0-posix-dwarf-rt_v6-rev0\mingw32\bin;C:\Program Files\CMake\bin;C:\Program Files (x86)\mingw-w64\i686-8.1.0-posix-dwarf-rt_v6-rev0\mingw32;C:\opencv\build\x64\vc14\bin;C:\Program Files\Git\cmd;C:\Program Files\NVIDIA Corporation\Nsight Compute 2019.1\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX86\x64;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x64;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX86\x86;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x86;C:\Users\amirphl\AppData\Local\Microsoft\WindowsApps;A:\softwares\CLion 2018.3.3\bin;;C:\Users\amirphl\AppData\Local\Programs\MiKTeX 2.9\miktex\bin\x64\;C:\Program Files (x86)\Nmap;C:\geckodriver.exe;C:\geckodriver;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x64\cl.exe;C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Tools\MSVC\14.10.25017\bin\HostX64\x64\cl;
+383 [7388] INFO perfrun.launcher <> - set environment variable: INTEL_LIBITTNOTIFY32 = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin32\runtime\ittnotify_collector.dll
+383 [7388] INFO perfrun.launcher <> - set environment variable: INTEL_LIBITTNOTIFY64 = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\runtime\ittnotify_collector.dll
+383 [7388] INFO perfrun.launcher <> - set environment variable: INTEL_ITTNOTIFY_GROUPS = 
+383 [7388] INFO perfrun.launcher <> - set environment variable: INTEL_JIT_PROFILER32 = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin32\runtime\ittnotify_collector.dll
+383 [7388] INFO perfrun.launcher <> - set environment variable: INTEL_JIT_PROFILER64 = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\runtime\ittnotify_collector.dll
+384 [7388] INFO perfrun.launcher <> - set environment variable: VS_PROFILER = ittnotify_collector.dll
+384 [7388] INFO perfrun.launcher <> - set environment variable: ENABLE_JITPROFILING = 1
+384 [7388] INFO perfrun.launcher <> - set environment variable: CL_CONFIG_USE_VTUNE = True
+384 [7388] INFO perfrun.launcher <> - set environment variable: __OCL_MIC_INTEL_LIBITTNOTIFY64 = /amplxe/results/libittnotify_collector.so
+384 [7388] INFO perfrun.launcher <> - set environment variable: __OCL_MIC_INTEL_JIT_PROFILER64 = /amplxe/results/libittnotify_collector.so
+384 [7388] INFO perfrun.launcher <> - set environment variable: KMP_FORKJOIN_FRAMES = 0
+384 [7388] INFO perfrun.launcher <> - set environment variable: KMP_FORKJOIN_FRAMES_MODE = 0
+404 [7388] INFO perfrun.launcher <> - RpcServer: run RPC server to handle requests
+485 [7388] INFO perfrun.sdk <> - IProcessUtil: the given executable 'A:\mp\hw3\2-a.exe' is valid.
+486 [7388] INFO perfrun.launcher <> - Launcher: command line to start before modification = A:\mp\hw3\2-a.exe
+505 [7388] INFO perfrun.launcher <> - Launcher: command line to start after modification = C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\pin.exe -error_file A:\mp\hw3\Q2-part1\r000hs\data.0\pinerr.tpsslog -detach_reattach -probe -follow_execv -p32 C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin32\pin.exe -p64 C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\pin.exe -t64 C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\tpsstool.dll -t C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin32\tpsstool.dll -server_name tpss_ipc.1864 -prd_dir C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019 -- A:\mp\hw3\2-a.exe
+505 [7388] INFO perfrun.launcher <> - ProcessCreator object was created
+553 [7388] INFO perfrun.launcher <> - Launcher: the process was started in suspend mode
+560 [17136] INFO perfrun.itt <> - start itt controller for pid #1824
+980 [17136] INFO perfrun.emon <> - runCmd:"C:\Program Files (x86)\IntelSWTools\VTune Amplifier 2019\bin64\emon.exe" -u -t0.05 -l0 -A -C "CPU_CLK_UNHALTED.ONE_THREAD_ACTIVE,CPU_CLK_UNHALTED.REF_TSC,CPU_CLK_UNHALTED.REF_XCLK,CPU_CLK_UNHALTED.THREAD,FP_ARITH_INST_RETIRED.128B_PACKED_DOUBLE,FP_ARITH_INST_RETIRED.128B_PACKED_SINGLE,FP_ARITH_INST_RETIRED.256B_PACKED_DOUBLE,FP_ARITH_INST_RETIRED.256B_PACKED_SINGLE,FP_ARITH_INST_RETIRED.SCALAR_DOUBLE,FP_ARITH_INST_RETIRED.SCALAR_SINGLE,INST_RETIRED.ANY,UOPS_EXECUTED.THREAD,UOPS_EXECUTED.X87,UOPS_RETIRED.RETIRE_SLOTS" -f "A:\mp\hw3\Q2-part1\r000hs\data.0\emon.0.emon"
+997 [17136] INFO perfrun.emon <> - Waiting trace file creation: A:\mp\hw3\Q2-part1\r000hs\data.0\emon.0.emon
+1206 [17136] INFO perfrun.emon <> - trace file was found
+1206 [17136] INFO perfrun.tpss <> - start tpss controller for pid #1824
+1265 [7388] INFO perfrun.launcher <> - Launcher: all plugins were started
+1266 [7388] INFO perfrun.launcher <> - DirectoryMonitor object was created
+1266 [7388] INFO perfrun.launcher <> - DirectoryMonitor: a callback was added
+1266 [7388] INFO perfrun.launcher <> - DirectoryMonitor was started with pingTime = 1000
+1266 [7388] INFO perfrun.launcher <> - DeadlineTimer is going to be constructed
+1282 [7388] INFO perfrun.launcher <> - DeadlineTimer: a callback was added
+1309 [7388] INFO perfrun.launcher <> - Launcher: resume the profiled application and  wait its termination or stop command
+4627 [7388] INFO perfrun.launcher <> - Launcher: the profiled application was terminated  with exit code = 0
+4702 [17136] INFO perfrun.itt <> - stop itt controller
+4702 [17136] INFO perfrun.itt <> - detach itt controller
+4800 [17136] INFO perfrun.emon <> - Emon collector successfully stopped.
+
+4800 [17136] INFO perfrun.tpss <> - stop tpss controller
+4801 [17136] INFO perfrun.sdk <> - De-allocating TMU: A:\mp\hw3\Q2-part1\r000hs\data.0\systemcollector-1864-DESKTOP-50RSL8H.sc
+4815 [17136] INFO perfrun.system <> - closed the system trace file: A:\mp\hw3\Q2-part1\r000hs\data.0\systemcollector-1864-DESKTOP-50RSL8H.sc
+4815 [7388] INFO perfrun.launcher <> - Launcher: all plugins were stopped.
+4815 [7388] INFO perfrun.launcher <> - DeadlineTimer is going to be destroyed
+4815 [7388] INFO perfrun.launcher <> - DirectoryMonitor object was destroyed
+4815 [7388] WARN perfrun.launcher <> - Stop command is ignored because it is received when collection is already stopped, at file: C:\BB\INNLphep2w6r\b\b\tmp6petf1\vcs\perfrun1\launcher\src\command_handler.cpp:212
+4816 [7388] INFO perfrun.launcher <> - Application exit code: 0
+4816 [7388] INFO perfrun.launcher <> - Exit code: 0
+4816 [17136] INFO perfrun.launcher <> - plugin system has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin itt has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin  has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin gpu has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin etw.kernel has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin etw.dx has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin etw.wsa has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin mrte has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin emon has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin cuscol has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin stdsrc has been added successfully
+4817 [17136] INFO perfrun.launcher <> - plugin sep has been added successfully
+4818 [17136] INFO perfrun.launcher <> - plugin vtsspp has been added successfully
+4818 [17136] INFO perfrun.launcher <> - plugin  has been added successfully
+4818 [17136] INFO perfrun.launcher <> - plugin tpss has been added successfully
+4819 [17136] INFO perfrun.launcher <> - plugin exprof has been added successfully
+4819 [17136] INFO perfrun.launcher <> - plugin  has been added successfully
+4819 [17136] INFO perfrun.launcher <> - plugin  has been added successfully
+4819 [17136] INFO perfrun.launcher <> - plugin  has been added successfully
+4819 [17136] INFO perfrun.launcher <> - plugin  has been added successfully

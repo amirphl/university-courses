@@ -1,0 +1,3 @@
+A:/mp/lab6/Serial_Version/cmake-build-debug/CMakeFiles/Serial_Version.dir
+A:/mp/lab6/Serial_Version/cmake-build-debug/CMakeFiles/edit_cache.dir
+A:/mp/lab6/Serial_Version/cmake-build-debug/CMakeFiles/rebuild_cache.dir

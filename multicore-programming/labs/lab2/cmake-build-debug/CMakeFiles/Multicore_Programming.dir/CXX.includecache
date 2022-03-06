@@ -1,0 +1,20 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+A:/mp/Multicore_Programming/main.cpp
+stdlib.h
+-
+stdio.h
+-
+time.h
+-
+omp.h
+-
+math.h
+-
+

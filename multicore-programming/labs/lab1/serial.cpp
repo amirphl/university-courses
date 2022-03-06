@@ -1,0 +1,60 @@
+#pragma optimize( "2", on )
+
+#include <cstdio>
+#include <cmath>
+#include <omp.h>
+#include <sys/time.h>
+
+#define NUM_THREADS 6
+#pragma comment(lib, "winmm.lib")
+const long int VERYBIG = 100000;
+
+// ***********************************************************************
+int main() {
+    int i;
+    long int j, k, sum;
+    double sumx, sumy, total;
+
+    struct timeval start{}, temp{};
+    long tim, utim, elapsed;
+    // -----------------------------------------------------------------------
+    // Output a start message
+    printf("None Parallel Timings for %d iterations\n\n", (int) VERYBIG);
+    // repeat experiment several times
+    for (i = 0; i < 6; i++) {
+        // get starting time56 x CHAPTER 3 PARALLEL STUDIO XE FOR THE IMPATIENT
+        gettimeofday(&start, nullptr);
+        // reset check sum & running total
+        sum = 0;
+        total = 0.0;
+        // Work Loop, do some work by looping VERYBIG times
+        for (j = 0; j < VERYBIG; j++) {
+            // increment check sum
+            sum += 1;
+            // Calculate first arithmetic series
+            sumx = 0.0;
+            for (k = 0; k < j; k++)
+                sumx = sumx + (double) k;
+            // Calculate second arithmetic series
+            sumy = 0.0;
+            for (k = j; k > 0; k--)
+                sumy = sumy + (double) k;
+            if (sumx > 0.0)total = total + 1.0 / sqrt(sumx);
+            if (sumy > 0.0)total = total + 1.0 / sqrt(sumy);
+        }
+        // get ending time and use it to determine elapsed time
+        gettimeofday(&temp, nullptr);
+        tim = temp.tv_sec - start.tv_sec;
+        utim = temp.tv_usec - start.tv_usec;
+        elapsed = static_cast<long>(((tim) * 1000 + utim / 1000.0) + 0.5);
+        // report elapsed time
+        printf("Time Elapsed % 10d mSecs Total = %lf Check Sum = %ld\n",
+               static_cast<int>(elapsed), total, sum);
+    }
+
+    // return integer as required by function header
+    printf("END.");
+    getchar();
+    return 0;
+}
+// **********************************************************************

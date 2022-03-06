@@ -1,0 +1,4 @@
+"A:\softwares\CLion 2018.3.3\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" A:\mp\Multicore_Programming
+-- Configuring done
+-- Generating done
+-- Build files have been written to: A:/mp/Multicore_Programming/cmake-build-debug

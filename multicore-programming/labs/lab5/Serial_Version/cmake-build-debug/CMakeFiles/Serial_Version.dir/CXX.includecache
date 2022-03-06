@@ -1,0 +1,18 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+A:/mp/lab5/Serial_Version/main.cpp
+stdlib.h
+-
+stdio.h
+-
+time.h
+-
+omp.h
+-
+
