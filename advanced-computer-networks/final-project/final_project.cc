@@ -194,6 +194,7 @@ void fill_on_off_scenarios(
             Seconds(2),
             Seconds(30)));
 
+    cout << "-----\n";
     northWifiInterfaces[0].GetAddress(0).Print(cout);
     cout << "\n";
     northWifiInterfaces[0].GetAddress(1).Print(cout);
@@ -247,8 +248,8 @@ void fill_on_off_scenarios(
 }
 
 void setup_on_off_application(vector<OnOffScenario> &scenarios,
-                              vector<ApplicationContainer> &source_apps,
-                              vector<ApplicationContainer> &sink_apps)
+                              vector<ApplicationContainer> &sourceApps,
+                              vector<ApplicationContainer> &sinkApps)
 {
     for (OnOffScenario &s : scenarios)
     {
@@ -256,18 +257,51 @@ void setup_on_off_application(vector<OnOffScenario> &scenarios,
         onoff.SetAttribute("OnTime", s.onTime);
         onoff.SetAttribute("OffTime", s.offTime);
         onoff.SetConstantRate(s.dataRate);
-        ApplicationContainer source_app = onoff.Install(s.source);
-        source_app.Start(s.start);
-        source_app.Stop(s.end);
+        ApplicationContainer sourceApp = onoff.Install(s.source);
+        sourceApp.Start(s.start);
+        sourceApp.Stop(s.end);
 
         PacketSinkHelper sinkHelper("ns3::UdpSocketFactory", Address(InetSocketAddress(Ipv4Address::GetAny(), s.sinkPort)));
-        ApplicationContainer sink_app = sinkHelper.Install(s.sink);
-        sink_app.Start(s.start);
-        sink_app.Stop(s.end);
+        ApplicationContainer sinkApp = sinkHelper.Install(s.sink);
+        sinkApp.Start(s.start);
+        sinkApp.Stop(s.end);
 
-        source_apps.push_back(source_app);
-        sink_apps.push_back(sink_app);
+        sourceApps.push_back(sourceApp);
+        sinkApps.push_back(sinkApp);
     }
+}
+
+void setup_udp_echo_application(
+    vector<Ipv4InterfaceContainer> &p2pInterfaces,
+    vector<Ipv4InterfaceContainer> &northCsmaInterfaces,
+    vector<Ipv4InterfaceContainer> &southCsmaInterfaces,
+    vector<Ipv4InterfaceContainer> &northWifiInterfaces,
+    vector<Ipv4InterfaceContainer> &southWifiInterfaces,
+    unordered_map<int, Ptr<Node>> &indexToNode,
+    vector<ApplicationContainer> &udpClientApps,
+    vector<ApplicationContainer> &udpServerApps)
+{
+    UdpEchoServerHelper echoServerHelper(5432);
+    ApplicationContainer serverApp = echoServerHelper.Install(indexToNode[42]);
+    serverApp.Start(Seconds(1.0));
+    serverApp.Stop(Seconds(6.0));
+    udpServerApps.push_back(serverApp);
+
+    cout << "-----\n";
+    southWifiInterfaces[0].GetAddress(0).Print(cout);
+    cout << "\n";
+    southWifiInterfaces[0].GetAddress(1).Print(cout);
+    cout << "\n";
+
+    UdpEchoClientHelper echoClientHelper(southWifiInterfaces[0].GetAddress(1), 5432);
+    echoClientHelper.SetAttribute("MaxPackets", UintegerValue(1));
+    echoClientHelper.SetAttribute("Interval", TimeValue(Seconds(1.0)));
+    echoClientHelper.SetAttribute("PacketSize", UintegerValue(1024));
+
+    ApplicationContainer clientApp = echoClientHelper.Install(indexToNode[13]);
+    clientApp.Start(Seconds(1.0));
+    clientApp.Stop(Seconds(6.0));
+    udpClientApps.push_back(clientApp);
 }
 
 void setup_p2p(
@@ -444,8 +478,10 @@ int main(int argc, char *argv[])
 
     vector<Edge> edges;
     vector<OnOffScenario> scenarios;
-    vector<ApplicationContainer> source_apps;
-    vector<ApplicationContainer> sink_apps;
+    vector<ApplicationContainer> sourceApps;
+    vector<ApplicationContainer> sinkApps;
+    vector<ApplicationContainer> udpClientApps;
+    vector<ApplicationContainer> udpServerApps;
     unordered_map<int, Ptr<Node>> indexToNode;
 
     create_nodes(p2pNodes,
@@ -514,7 +550,18 @@ int main(int argc, char *argv[])
                           indexToNode,
                           scenarios);
 
-    setup_on_off_application(scenarios, source_apps, sink_apps);
+    setup_on_off_application(scenarios, sourceApps, sinkApps);
+
+    setup_udp_echo_application(p2pInterfaces,
+                               northCsmaInterfaces,
+                               southCsmaInterfaces,
+                               northWifiInterfaces,
+                               southWifiInterfaces,
+                               indexToNode,
+                               udpClientApps,
+                               udpServerApps);
+
+    // Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
     Simulator::Stop(Seconds(simulationPeriod));
     Simulator::Run();
