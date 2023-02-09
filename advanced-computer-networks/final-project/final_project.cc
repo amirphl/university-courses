@@ -524,16 +524,32 @@ void setup_link_failure(unordered_map<int, Ptr<Node>> &indexToNode)
     Simulator::Schedule(Seconds(18), &Ipv4::SetUp, n3_ipv4, n3n0Index);
 }
 
+void parseCMD(
+    int argc,
+    char *argv[],
+    bool &verbose,
+    bool &tracing,
+    string &p2pDateRateCmd,
+    uint64_t &p2pDelayMSCmd)
+{
+    CommandLine cmd;
+    cmd.AddValue("verbose", "Tell echo applications to log if true", verbose);
+    cmd.AddValue("tracing", "Enable pcap tracing", tracing);
+    cmd.AddValue("p2pDateRate", "p2p date rate", p2pDateRateCmd);
+    cmd.AddValue("p2pDelay", "p2p delay(ms)", p2pDelayMSCmd);
+
+    cmd.Parse(argc, argv);
+}
+
 int main(int argc, char *argv[])
 {
     bool verbose = true;
     bool tracing = true;
+    string p2pDateRateCmd = "2Mbps";
+    uint64_t p2pDelayMSCmd = 30;
 
-    CommandLine cmd;
-    cmd.AddValue("verbose", "Tell echo applications to log if true", verbose);
-    cmd.AddValue("tracing", "Enable pcap tracing", tracing);
-
-    cmd.Parse(argc, argv);
+    parseCMD(argc, argv, verbose, tracing, p2pDateRateCmd, p2pDelayMSCmd);
+    cout << "p2pDateRateCmd = " << p2pDateRateCmd << ", p2pDelayMSCmd = " << p2pDelayMSCmd << "\n";
 
     if (verbose)
     {
@@ -541,8 +557,8 @@ int main(int argc, char *argv[])
         LogComponentEnable("UdpEchoServerApplication", LOG_LEVEL_INFO);
     }
 
-    StringValue p2pDataRate("2Mbps");
-    TimeValue p2pDelay(MilliSeconds(30));
+    StringValue p2pDataRate(p2pDateRateCmd);
+    TimeValue p2pDelay(MilliSeconds(p2pDelayMSCmd));
     StringValue northCsmaDataRate("100Mbps");
     TimeValue northCsmaDelay(NanoSeconds(5600));
     StringValue southCsmaDataRate("200Mbps");
