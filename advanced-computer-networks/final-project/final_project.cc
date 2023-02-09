@@ -24,6 +24,11 @@
 #include "ns3/internet-module.h"
 #include "ns3/yans-wifi-helper.h"
 #include "ns3/ssid.h"
+#include "ns3/flow-monitor-helper.h"
+#include "ns3/ipv4-global-routing-helper.h"
+#include "ns3/netanim-module.h"
+#include "ns3/stats-module.h"
+#include "ns3/trace-helper.h"
 
 using namespace ns3;
 using namespace std;
@@ -45,6 +50,29 @@ public:
     }
 };
 
+class OnOffScenario
+{
+public:
+    int sourceIndex, sinkIndex;
+    StringValue onTime, offTime;
+    DataRate dataRate;
+    Time start, end;
+
+    OnOffScenario(int sourceIndex, int sinkIndex,
+                  StringValue onTime, StringValue offTime,
+                  DataRate dataRate,
+                  Time start, Time end)
+    {
+        this->sourceIndex = sourceIndex;
+        this->sinkIndex = sinkIndex;
+        this->onTime = onTime;
+        this->offTime = offTime;
+        this->dataRate = dataRate;
+        this->start = start;
+        this->end = end;
+    }
+};
+
 void fill_p2p_edges(vector<Edge> &edges)
 {
     edges.push_back(Edge(0, 1, "192.168.1.0", "255.255.255.0"));
@@ -55,6 +83,39 @@ void fill_p2p_edges(vector<Edge> &edges)
     edges.push_back(Edge(3, 31, "192.168.6.0", "255.255.255.0"));
 }
 
+void fill_on_off_scenarioes(vector<OnOffScenario> &scenarios)
+{
+    scenarios.push_back(OnOffScenario(0, 1,
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                       StringValue("ns3::ConstantRandomVariable[Constant=0]"),
+                                       DataRate("1500kbps"),
+                                       Seconds(2), Seconds(30)));
+    scenarios.push_back(OnOffScenario(0, 3,
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                       StringValue("ns3::ConstantRandomVariable[Constant=0]"),
+                                       DataRate("2500kbps"),
+                                       Seconds(5), Seconds(25)));
+    scenarios.push_back(OnOffScenario(0, 31,
+                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                       DataRate("4096bps"),
+                                       Seconds(2), Seconds(30)));
+    scenarios.push_back(OnOffScenario(0, 11,
+                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                       DataRate("4096bps"),
+                                       Seconds(2), Seconds(30)));
+    scenarios.push_back(OnOffScenario(3, 22,
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+                                       DataRate("4096bps"),
+                                       Seconds(0), Seconds(30)));
+    scenarios.push_back(OnOffScenario(1, 42,
+                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+                                       DataRate("4096bps"),
+                                       Seconds(0), Seconds(30)));
+}
 void setup_mobility(MobilityHelper &mobilityHelper)
 {
     mobilityHelper.SetPositionAllocator("ns3::GridPositionAllocator",
@@ -71,7 +132,9 @@ unordered_map<int, Ptr<Node>> *setup_p2p(NodeContainer &nodes,
                                          vector<NodeContainer> &links,
                                          vector<NetDeviceContainer> &devices,
                                          vector<Ipv4InterfaceContainer> &interfaces,
-                                         vector<Edge> &edges)
+                                         vector<Edge> &edges,
+                                         StringValue dataRate,
+                                         TimeValue delay)
 {
     unordered_set<int> uniqueIndexes;
 
@@ -89,8 +152,8 @@ unordered_map<int, Ptr<Node>> *setup_p2p(NodeContainer &nodes,
     inetStackHelper.Install(nodes);
 
     PointToPointHelper p2pHelper;
-    p2pHelper.SetDeviceAttribute("DataRate", StringValue("2Mbps")); // TODO
-    p2pHelper.SetChannelAttribute("Delay", StringValue("30ms"));
+    p2pHelper.SetDeviceAttribute("DataRate", dataRate);
+    p2pHelper.SetChannelAttribute("Delay", delay);
 
     Ipv4AddressHelper ipv4Helper;
 
@@ -139,6 +202,8 @@ void setup_csma(NodeContainer &nodes,
                 Ptr<Node> &gateway,
                 NetDeviceContainer &device,
                 Ipv4InterfaceContainer &interface,
+                StringValue dataRate,
+                TimeValue delay,
                 string network,
                 string mask,
                 int nCsma)
@@ -150,8 +215,8 @@ void setup_csma(NodeContainer &nodes,
     nodes.Add(gateway);
 
     CsmaHelper csmaHelper;
-    csmaHelper.SetChannelAttribute("DataRate", StringValue("100Mbps")); // TODO
-    csmaHelper.SetChannelAttribute("Delay", TimeValue(NanoSeconds(6560)));
+    csmaHelper.SetChannelAttribute("DataRate", dataRate);
+    csmaHelper.SetChannelAttribute("Delay", delay);
 
     device = csmaHelper.Install(nodes);
 
@@ -204,6 +269,9 @@ void setup_wifi(NodeContainer &stationNodes,
     mobilityHelper.Install(accessPointNode);
 }
 
+void setup_on_off_application()
+{
+}
 int main(int argc, char *argv[])
 {
     bool verbose = true;
@@ -234,6 +302,15 @@ int main(int argc, char *argv[])
         LogComponentEnable("UdpEchoServerApplication", LOG_LEVEL_INFO);
     }
 
+    StringValue p2pDataRate("2Mbps");
+    TimeValue p2pDelay(MilliSeconds(30));
+    StringValue northCsmaDataRate("100Mbps");
+    TimeValue northCsmaDelay(NanoSeconds(5600));
+    StringValue southCsmaDataRate("200Mbps");
+    TimeValue southCsmaDelay(NanoSeconds(6560));
+
+    double simulationPeriod = 30.0;
+
     NodeContainer p2pNodes, northCsmaNodes, southCsmaNodes, northWifiNodes, southWifiNodes;
     vector<NodeContainer> p2pLinks;
     vector<NetDeviceContainer> p2pDevices;
@@ -251,21 +328,46 @@ int main(int argc, char *argv[])
         southStationInterface,
         southAccessPointInterface;
     MobilityHelper mobilityHelper;
+
+    vector<OnOffScenario> scenarios;
     vector<Edge> edges;
 
+    fill_on_off_scenarioes(scenarios);
     fill_p2p_edges(edges);
     setup_mobility(mobilityHelper);
 
-    unordered_map<int, Ptr<Node>> *indexToNode = setup_p2p(p2pNodes, p2pLinks, p2pDevices, p2pInterfaces, edges);
+    unordered_map<int, Ptr<Node>> *indexToNode = setup_p2p(p2pNodes,
+                                                           p2pLinks,
+                                                           p2pDevices,
+                                                           p2pInterfaces,
+                                                           edges,
+                                                           p2pDataRate,
+                                                           p2pDelay);
 
     Ptr<Node> n11 = indexToNode->at(11);
     Ptr<Node> n31 = indexToNode->at(31);
     Ptr<Node> n2 = indexToNode->at(2);
     Ptr<Node> n4 = indexToNode->at(4);
 
-    setup_csma(northCsmaNodes, n11, northCsmaDevice, northCsmaInterface, "10.1.2.0", "255.255.255.0", 2);
+    setup_csma(northCsmaNodes,
+               n11,
+               northCsmaDevice,
+               northCsmaInterface,
+               northCsmaDataRate,
+               northCsmaDelay,
+               "10.1.2.0",
+               "255.255.255.0",
+               2);
 
-    setup_csma(southCsmaNodes, n31, southCsmaDevice, southCsmaInterface, "10.1.5.0", "255.255.255.0", 2);
+    setup_csma(southCsmaNodes,
+               n31,
+               southCsmaDevice,
+               southCsmaInterface,
+               southCsmaDataRate,
+               southCsmaDelay,
+               "10.1.5.0",
+               "255.255.255.0",
+               2);
 
     setup_wifi(northWifiNodes,
                n2,
@@ -291,7 +393,7 @@ int main(int argc, char *argv[])
                "255.255.255.0",
                2);
 
-    Simulator::Stop(Seconds(10.0));
+    Simulator::Stop(Seconds(simulationPeriod));
     Simulator::Run();
     Simulator::Destroy();
     return 0;
