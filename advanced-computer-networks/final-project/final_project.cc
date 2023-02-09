@@ -38,13 +38,13 @@ NS_LOG_COMPONENT_DEFINE("FinalProject");
 class Edge
 {
 public:
-    int sourceIndex, sinkIndex;
+    Ptr<Node> source, sink;
     string network, mask;
 
-    Edge(int sourceIndex, int sinkIndex, string network, string mask)
+    Edge(Ptr<Node> source, Ptr<Node> sink, string network, string mask)
     {
-        this->sourceIndex = sourceIndex;
-        this->sinkIndex = sinkIndex;
+        this->source = source;
+        this->sink = sink;
         this->network = network;
         this->mask = mask;
     }
@@ -53,18 +53,21 @@ public:
 class OnOffScenario
 {
 public:
-    int sourceIndex, sinkIndex;
+    Ptr<Node> source;
+    Ipv4Address sinkIP;
+    uint16_t sinkPort;
     StringValue onTime, offTime;
     DataRate dataRate;
     Time start, end;
 
-    OnOffScenario(int sourceIndex, int sinkIndex,
+    OnOffScenario(Ptr<Node> source, Ipv4Address sinkIP, uint16_t sinkPort,
                   StringValue onTime, StringValue offTime,
                   DataRate dataRate,
                   Time start, Time end)
     {
-        this->sourceIndex = sourceIndex;
-        this->sinkIndex = sinkIndex;
+        this->source = source;
+        this->sinkIP = sinkIP;
+        this->sinkPort = sinkPort,
         this->onTime = onTime;
         this->offTime = offTime;
         this->dataRate = dataRate;
@@ -73,49 +76,221 @@ public:
     }
 };
 
-void fill_p2p_edges(vector<Edge> &edges)
+void create_nodes(
+    NodeContainer &p2pNodes,
+    NodeContainer &northCsmaNodes,
+    NodeContainer &southCsmaNodes,
+    NodeContainer &northStationNodes,
+    NodeContainer &southStationNodes,
+    Ptr<Node> &northCsmaGateWay,
+    Ptr<Node> &southCsmaGateWay,
+    Ptr<Node> &northAccessPoint,
+    Ptr<Node> &southAccessPoint,
+    unordered_map<int, Ptr<Node>> &indexToNode)
 {
-    edges.push_back(Edge(0, 1, "192.168.1.0", "255.255.255.0"));
-    edges.push_back(Edge(0, 2, "192.168.2.0", "255.255.255.0"));
-    edges.push_back(Edge(0, 3, "192.168.3.0", "255.255.255.0"));
-    edges.push_back(Edge(0, 4, "192.168.4.0", "255.255.255.0"));
-    edges.push_back(Edge(1, 11, "192.168.5.0", "255.255.255.0"));
-    edges.push_back(Edge(3, 31, "192.168.6.0", "255.255.255.0"));
+    p2pNodes.Create(7);
+    northCsmaNodes.Create(2);
+    southCsmaNodes.Create(2);
+    northStationNodes.Create(2);
+    southStationNodes.Create(2);
+
+    indexToNode.insert({
+        {0, p2pNodes.Get(0)},
+        {1, p2pNodes.Get(1)},
+        {2, p2pNodes.Get(2)},
+        {3, p2pNodes.Get(3)},
+        {4, p2pNodes.Get(4)},
+        {11, p2pNodes.Get(5)},
+        {31, p2pNodes.Get(6)},
+        {12, northCsmaNodes.Get(0)},
+        {13, northCsmaNodes.Get(1)},
+        {32, southCsmaNodes.Get(0)},
+        {33, southCsmaNodes.Get(1)},
+        {21, northStationNodes.Get(0)},
+        {22, northStationNodes.Get(1)},
+        {41, southStationNodes.Get(0)},
+        {42, southStationNodes.Get(1)},
+    });
+
+    northCsmaGateWay = indexToNode[11];
+    southCsmaGateWay = indexToNode[31];
+    northAccessPoint = indexToNode[2];
+    southAccessPoint = indexToNode[4];
+
+    InternetStackHelper inetStackHelper;
+    inetStackHelper.Install(p2pNodes);
+    inetStackHelper.Install(northCsmaNodes);
+    inetStackHelper.Install(southCsmaNodes);
+    inetStackHelper.Install(northStationNodes);
+    inetStackHelper.Install(southStationNodes);
 }
 
-void fill_on_off_scenarioes(vector<OnOffScenario> &scenarios)
+void create_edges(vector<Edge> &edges, unordered_map<int, Ptr<Node>> &indexToNode)
 {
-    scenarios.push_back(OnOffScenario(0, 1,
-                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                       StringValue("ns3::ConstantRandomVariable[Constant=0]"),
-                                       DataRate("1500kbps"),
-                                       Seconds(2), Seconds(30)));
-    scenarios.push_back(OnOffScenario(0, 3,
-                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                       StringValue("ns3::ConstantRandomVariable[Constant=0]"),
-                                       DataRate("2500kbps"),
-                                       Seconds(5), Seconds(25)));
-    scenarios.push_back(OnOffScenario(0, 31,
-                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                       DataRate("4096bps"),
-                                       Seconds(2), Seconds(30)));
-    scenarios.push_back(OnOffScenario(0, 11,
-                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                       DataRate("4096bps"),
-                                       Seconds(2), Seconds(30)));
-    scenarios.push_back(OnOffScenario(3, 22,
-                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-                                       DataRate("4096bps"),
-                                       Seconds(0), Seconds(30)));
-    scenarios.push_back(OnOffScenario(1, 42,
-                                       StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-                                       StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-                                       DataRate("4096bps"),
-                                       Seconds(0), Seconds(30)));
+    edges.push_back(Edge(indexToNode[0], indexToNode[1], "192.168.1.0", "255.255.255.0"));
+    edges.push_back(Edge(indexToNode[0], indexToNode[2], "192.168.2.0", "255.255.255.0"));
+    edges.push_back(Edge(indexToNode[0], indexToNode[3], "192.168.3.0", "255.255.255.0"));
+    edges.push_back(Edge(indexToNode[0], indexToNode[4], "192.168.4.0", "255.255.255.0"));
+    edges.push_back(Edge(indexToNode[1], indexToNode[11], "192.168.5.0", "255.255.255.0"));
+    edges.push_back(Edge(indexToNode[3], indexToNode[31], "192.168.6.0", "255.255.255.0"));
 }
+
+void fill_on_off_scenarios(
+    vector<Ipv4InterfaceContainer> &p2pInterfaces,
+    vector<Ipv4InterfaceContainer> &northCsmaInterfaces,
+    vector<Ipv4InterfaceContainer> &southCsmaInterfaces,
+    vector<Ipv4InterfaceContainer> &northWifiInterfaces,
+    vector<Ipv4InterfaceContainer> &southWifiInterfaces,
+    unordered_map<int, Ptr<Node>> &indexToNode,
+    vector<OnOffScenario> &scenarios)
+{
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[0],
+            p2pInterfaces[0].GetAddress(1), // TODO find a better way to do that.
+            1443,
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=0]"),
+            DataRate("1500kbps"),
+            Seconds(2),
+            Seconds(30)));
+
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[0],
+            p2pInterfaces[2].GetAddress(1), // TODO
+            2443,
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=0]"),
+            DataRate("2500kbps"),
+            Seconds(5),
+            Seconds(25)));
+
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[0],
+            p2pInterfaces[5].GetAddress(1), // TODO
+            3443,
+            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            DataRate("4096bps"),
+            Seconds(2),
+            Seconds(30)));
+
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[0],
+            p2pInterfaces[4].GetAddress(1), // TODO
+            4443,
+            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            DataRate("4096bps"),
+            Seconds(2),
+            Seconds(30)));
+
+    northWifiInterfaces[0].GetAddress(0).Print(cout);
+    cout << "\n";
+    northWifiInterfaces[0].GetAddress(1).Print(cout);
+    cout << "\n";
+
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[3],
+            northWifiInterfaces[0].GetAddress(1), // TODO
+            5443,
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+            DataRate("4096bps"),
+            Seconds(0),
+            Seconds(30)));
+
+    southWifiInterfaces[0].GetAddress(0).Print(cout);
+    cout << "\n";
+    southWifiInterfaces[0].GetAddress(1).Print(cout);
+    cout << "\n";
+
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[1],
+            southWifiInterfaces[0].GetAddress(1), // TODO
+            6443,
+            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            DataRate("4096bps"),
+            Seconds(0),
+            Seconds(30)));
+
+    southCsmaInterfaces[0].GetAddress(0).Print(cout);
+    cout << "\n";
+    southCsmaInterfaces[0].GetAddress(1).Print(cout);
+    cout << "\n";
+
+    scenarios.push_back(
+        OnOffScenario(
+            indexToNode[2],
+            southCsmaInterfaces[0].GetAddress(1), // TODO
+            7443,
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
+            DataRate("4096bps"),
+            Seconds(0),
+            Seconds(30)));
+}
+
+void setup_p2p(
+    NodeContainer &nodes,
+    vector<NodeContainer> &links,
+    vector<NetDeviceContainer> &devices,
+    vector<Ipv4InterfaceContainer> &interfaces,
+    vector<Edge> &edges,
+    StringValue dataRate,
+    TimeValue delay)
+{
+    PointToPointHelper p2pHelper;
+    p2pHelper.SetDeviceAttribute("DataRate", dataRate);
+    p2pHelper.SetChannelAttribute("Delay", delay);
+
+    Ipv4AddressHelper ipv4Helper;
+
+    for (Edge &e : edges)
+    {
+        NodeContainer link = NodeContainer(e.source, e.sink);
+        NetDeviceContainer device = p2pHelper.Install(link);
+
+        ipv4Helper.SetBase(e.network.c_str(), e.mask.c_str());
+        Ipv4InterfaceContainer interface = ipv4Helper.Assign(device);
+
+        links.push_back(link);
+        devices.push_back(device);
+        interfaces.push_back(interface);
+    }
+}
+
+void setup_csma(NodeContainer &nodes,
+                Ptr<Node> &gateway,
+                vector<NetDeviceContainer> &devices,
+                vector<Ipv4InterfaceContainer> &interfaces,
+                StringValue dataRate,
+                TimeValue delay,
+                string network,
+                string mask)
+{
+    nodes.Add(gateway);
+
+    CsmaHelper csmaHelper;
+    csmaHelper.SetChannelAttribute("DataRate", dataRate);
+    csmaHelper.SetChannelAttribute("Delay", delay);
+
+    NetDeviceContainer device = csmaHelper.Install(nodes);
+
+    Ipv4AddressHelper ipv4Helper;
+    ipv4Helper.SetBase(network.c_str(), mask.c_str());
+    Ipv4InterfaceContainer interface = ipv4Helper.Assign(device);
+
+    devices.push_back(device);
+    interfaces.push_back(interface);
+}
+
 void setup_mobility(MobilityHelper &mobilityHelper)
 {
     mobilityHelper.SetPositionAllocator("ns3::GridPositionAllocator",
@@ -128,117 +303,15 @@ void setup_mobility(MobilityHelper &mobilityHelper)
     mobilityHelper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 }
 
-unordered_map<int, Ptr<Node>> *setup_p2p(NodeContainer &nodes,
-                                         vector<NodeContainer> &links,
-                                         vector<NetDeviceContainer> &devices,
-                                         vector<Ipv4InterfaceContainer> &interfaces,
-                                         vector<Edge> &edges,
-                                         StringValue dataRate,
-                                         TimeValue delay)
-{
-    unordered_set<int> uniqueIndexes;
-
-    for (Edge &e : edges)
-    {
-        uniqueIndexes.insert(e.sourceIndex);
-        uniqueIndexes.insert(e.sinkIndex);
-    }
-
-    const int nP2P = uniqueIndexes.size();
-
-    nodes.Create(nP2P);
-
-    InternetStackHelper inetStackHelper;
-    inetStackHelper.Install(nodes);
-
-    PointToPointHelper p2pHelper;
-    p2pHelper.SetDeviceAttribute("DataRate", dataRate);
-    p2pHelper.SetChannelAttribute("Delay", delay);
-
-    Ipv4AddressHelper ipv4Helper;
-
-    unordered_map<int, Ptr<Node>> *indexToNode = new unordered_map<int, Ptr<Node>>();
-    int nextNodeCounter = 0;
-
-    for (Edge &e : edges)
-    {
-        Ptr<Node> source, sink;
-
-        if (indexToNode->find(e.sourceIndex) == indexToNode->end())
-        {
-            source = nodes.Get(nextNodeCounter++);
-            indexToNode->insert({e.sourceIndex, source});
-        }
-        else
-        {
-            source = indexToNode->at(e.sourceIndex);
-        }
-
-        if (indexToNode->find(e.sinkIndex) == indexToNode->end())
-        {
-            sink = nodes.Get(nextNodeCounter++);
-            indexToNode->insert({e.sinkIndex, sink});
-        }
-        else
-        {
-            sink = indexToNode->at(e.sinkIndex);
-        }
-
-        NodeContainer link = NodeContainer(source, sink);
-        NetDeviceContainer device = p2pHelper.Install(link);
-
-        ipv4Helper.SetBase(e.network.c_str(), e.mask.c_str());
-        Ipv4InterfaceContainer interface = ipv4Helper.Assign(device);
-
-        links.push_back(link);
-        devices.push_back(device);
-        interfaces.push_back(interface);
-    }
-
-    return indexToNode;
-}
-
-void setup_csma(NodeContainer &nodes,
-                Ptr<Node> &gateway,
-                NetDeviceContainer &device,
-                Ipv4InterfaceContainer &interface,
-                StringValue dataRate,
-                TimeValue delay,
-                string network,
-                string mask,
-                int nCsma)
-{
-    nodes.Create(nCsma);
-    InternetStackHelper inetStackHelper;
-    inetStackHelper.Install(nodes);
-
-    nodes.Add(gateway);
-
-    CsmaHelper csmaHelper;
-    csmaHelper.SetChannelAttribute("DataRate", dataRate);
-    csmaHelper.SetChannelAttribute("Delay", delay);
-
-    device = csmaHelper.Install(nodes);
-
-    Ipv4AddressHelper ipv4Helper;
-    ipv4Helper.SetBase(network.c_str(), mask.c_str());
-    interface = ipv4Helper.Assign(device);
-}
-
 void setup_wifi(NodeContainer &stationNodes,
                 Ptr<Node> &accessPointNode,
-                NetDeviceContainer &stationDevice,
-                NetDeviceContainer &accessPointDevice,
-                Ipv4InterfaceContainer &stationInterface,
-                Ipv4InterfaceContainer &accessPointInterface,
+                vector<NetDeviceContainer> &devices,
+                vector<Ipv4InterfaceContainer> &interfaces,
                 MobilityHelper &mobilityHelper,
                 Ssid ssid,
                 string network,
-                string mask,
-                int nWifi)
+                string mask)
 {
-    stationNodes.Create(nWifi);
-
     YansWifiChannelHelper channel = YansWifiChannelHelper::Default();
     YansWifiPhyHelper phy = YansWifiPhyHelper::Default();
     phy.SetChannel(channel.Create());
@@ -250,28 +323,30 @@ void setup_wifi(NodeContainer &stationNodes,
     macHelper.SetType("ns3::StaWifiMac", "Ssid", SsidValue(ssid),
                       "ActiveProbing", BooleanValue(false)); // TODO
 
-    stationDevice = wifiHelper.Install(phy, macHelper, stationNodes);
+    NetDeviceContainer stationDevice = wifiHelper.Install(phy, macHelper, stationNodes);
 
     macHelper.SetType("ns3::ApWifiMac", "Ssid", SsidValue(ssid));
 
-    accessPointDevice = wifiHelper.Install(phy, macHelper, accessPointNode);
-
-    InternetStackHelper stack;
-    stack.Install(stationNodes);
-    // stack.Install(accessPointNode);
+    NetDeviceContainer accessPointDevice = wifiHelper.Install(phy, macHelper, accessPointNode);
 
     Ipv4AddressHelper ipv4Helper;
     ipv4Helper.SetBase(network.c_str(), mask.c_str());
-    stationInterface = ipv4Helper.Assign(stationDevice);
-    accessPointInterface = ipv4Helper.Assign(accessPointDevice);
+    Ipv4InterfaceContainer stationInterface = ipv4Helper.Assign(stationDevice);
+    Ipv4InterfaceContainer accessPointInterface = ipv4Helper.Assign(accessPointDevice);
 
     mobilityHelper.Install(stationNodes);
     mobilityHelper.Install(accessPointNode);
+
+    devices.push_back(stationDevice);
+    devices.push_back(accessPointDevice);
+    interfaces.push_back(stationInterface);
+    interfaces.push_back(accessPointInterface);
 }
 
 void setup_on_off_application()
 {
 }
+
 int main(int argc, char *argv[])
 {
     bool verbose = true;
@@ -311,87 +386,102 @@ int main(int argc, char *argv[])
 
     double simulationPeriod = 30.0;
 
-    NodeContainer p2pNodes, northCsmaNodes, southCsmaNodes, northWifiNodes, southWifiNodes;
+    NodeContainer p2pNodes,
+        northCsmaNodes,
+        southCsmaNodes,
+        northStationNodes,
+        southStationNodes;
+
+    Ptr<Node> northCsmaGateway,
+        southCsmaGateway,
+        northAccessPoint,
+        southAccessPoint;
+
     vector<NodeContainer> p2pLinks;
-    vector<NetDeviceContainer> p2pDevices;
-    vector<Ipv4InterfaceContainer> p2pInterfaces;
-    NetDeviceContainer northCsmaDevice,
-        southCsmaDevice,
-        northStationDevice,
-        northAccessPointDevice,
-        southStationDevice,
-        southAccessPointDevice;
-    Ipv4InterfaceContainer northCsmaInterface,
-        southCsmaInterface,
-        northStationInterface,
-        northAccessPointInterface,
-        southStationInterface,
-        southAccessPointInterface;
+
+    vector<NetDeviceContainer> p2pDevices,
+        northCsmaDevices,
+        southCsmaDevices,
+        northWifiDevices,
+        southWifiDevices;
+
+    vector<Ipv4InterfaceContainer> p2pInterfaces,
+        northCsmaInterfaces,
+        southCsmaInterfaces,
+        northWifiInterfaces,
+        southWifiInterfaces;
+
     MobilityHelper mobilityHelper;
 
-    vector<OnOffScenario> scenarios;
     vector<Edge> edges;
+    vector<OnOffScenario> scenarios;
+    unordered_map<int, Ptr<Node>> indexToNode;
 
-    fill_on_off_scenarioes(scenarios);
-    fill_p2p_edges(edges);
-    setup_mobility(mobilityHelper);
+    create_nodes(p2pNodes,
+                 northCsmaNodes,
+                 southCsmaNodes,
+                 northStationNodes,
+                 southStationNodes,
+                 northCsmaGateway,
+                 southCsmaGateway,
+                 northAccessPoint,
+                 southAccessPoint,
+                 indexToNode);
+    create_edges(edges, indexToNode);
 
-    unordered_map<int, Ptr<Node>> *indexToNode = setup_p2p(p2pNodes,
-                                                           p2pLinks,
-                                                           p2pDevices,
-                                                           p2pInterfaces,
-                                                           edges,
-                                                           p2pDataRate,
-                                                           p2pDelay);
-
-    Ptr<Node> n11 = indexToNode->at(11);
-    Ptr<Node> n31 = indexToNode->at(31);
-    Ptr<Node> n2 = indexToNode->at(2);
-    Ptr<Node> n4 = indexToNode->at(4);
+    setup_p2p(p2pNodes,
+              p2pLinks,
+              p2pDevices,
+              p2pInterfaces,
+              edges,
+              p2pDataRate,
+              p2pDelay);
 
     setup_csma(northCsmaNodes,
-               n11,
-               northCsmaDevice,
-               northCsmaInterface,
+               northCsmaGateway,
+               northCsmaDevices,
+               northCsmaInterfaces,
                northCsmaDataRate,
                northCsmaDelay,
                "10.1.2.0",
-               "255.255.255.0",
-               2);
+               "255.255.255.0");
 
     setup_csma(southCsmaNodes,
-               n31,
-               southCsmaDevice,
-               southCsmaInterface,
+               southCsmaGateway,
+               southCsmaDevices,
+               southCsmaInterfaces,
                southCsmaDataRate,
                southCsmaDelay,
                "10.1.5.0",
-               "255.255.255.0",
-               2);
+               "255.255.255.0");
 
-    setup_wifi(northWifiNodes,
-               n2,
-               northStationDevice,
-               northAccessPointDevice,
-               northStationInterface,
-               northAccessPointInterface,
+    setup_mobility(mobilityHelper);
+
+    setup_wifi(northStationNodes,
+               northAccessPoint,
+               northWifiDevices,
+               northWifiInterfaces,
                mobilityHelper,
                Ssid("ns-n2-ssid"),
                "10.1.3.0",
-               "255.255.255.0",
-               2);
+               "255.255.255.0");
 
-    setup_wifi(southWifiNodes,
-               n4,
-               southStationDevice,
-               southAccessPointDevice,
-               southStationInterface,
-               southAccessPointInterface,
+    setup_wifi(southStationNodes,
+               southAccessPoint,
+               southWifiDevices,
+               southWifiInterfaces,
                mobilityHelper,
                Ssid("ns-n4-ssid"),
                "10.1.4.0",
-               "255.255.255.0",
-               2);
+               "255.255.255.0");
+
+    fill_on_off_scenarios(p2pInterfaces,
+                          northCsmaInterfaces,
+                          southCsmaInterfaces,
+                          northWifiInterfaces,
+                          southWifiInterfaces,
+                          indexToNode,
+                          scenarios);
 
     Simulator::Stop(Seconds(simulationPeriod));
     Simulator::Run();
