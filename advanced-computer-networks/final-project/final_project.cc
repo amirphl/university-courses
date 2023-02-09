@@ -61,10 +61,16 @@ public:
     DataRate dataRate;
     Time start, end;
 
-    OnOffScenario(Ptr<Node> source, Ptr<Node> sink, Ipv4Address sinkIP, uint16_t sinkPort,
-                  StringValue onTime, StringValue offTime,
-                  DataRate dataRate,
-                  Time start, Time end)
+    OnOffScenario(
+        Ptr<Node> source,
+        Ptr<Node> sink,
+        Ipv4Address sinkIP,
+        uint16_t sinkPort,
+        StringValue onTime,
+        StringValue offTime,
+        DataRate dataRate,
+        Time start,
+        Time end)
     {
         this->source = source;
         this->sink = sink;
@@ -129,12 +135,41 @@ void create_nodes(
 
 void create_edges(vector<Edge> &edges, unordered_map<int, Ptr<Node>> &indexToNode)
 {
-    edges.push_back(Edge(indexToNode[0], indexToNode[1], "192.168.1.0", "255.255.255.0"));
-    edges.push_back(Edge(indexToNode[0], indexToNode[2], "192.168.2.0", "255.255.255.0"));
-    edges.push_back(Edge(indexToNode[0], indexToNode[3], "192.168.3.0", "255.255.255.0"));
-    edges.push_back(Edge(indexToNode[0], indexToNode[4], "192.168.4.0", "255.255.255.0"));
-    edges.push_back(Edge(indexToNode[1], indexToNode[11], "192.168.5.0", "255.255.255.0"));
-    edges.push_back(Edge(indexToNode[3], indexToNode[31], "192.168.6.0", "255.255.255.0"));
+    edges.push_back(
+        Edge(
+            indexToNode[0],
+            indexToNode[1],
+            "192.168.1.0",
+            "255.255.255.0"));
+    edges.push_back(
+        Edge(
+            indexToNode[0],
+            indexToNode[2],
+            "192.168.2.0",
+            "255.255.255.0"));
+    edges.push_back(
+        Edge(indexToNode[0],
+             indexToNode[3],
+             "192.168.3.0",
+             "255.255.255.0"));
+    edges.push_back(
+        Edge(
+            indexToNode[0],
+            indexToNode[4],
+            "192.168.4.0",
+            "255.255.255.0"));
+    edges.push_back(
+        Edge(
+            indexToNode[1],
+            indexToNode[11],
+            "192.168.5.0",
+            "255.255.255.0"));
+    edges.push_back(
+        Edge(
+            indexToNode[3],
+            indexToNode[31],
+            "192.168.6.0",
+            "255.255.255.0"));
 }
 
 void fill_on_off_scenarios(
@@ -150,7 +185,7 @@ void fill_on_off_scenarios(
         OnOffScenario(
             indexToNode[0],
             indexToNode[1],
-            p2pInterfaces[0].GetAddress(1), // TODO find a better way to do that.
+            p2pInterfaces[0].GetAddress(1), // TODO Find a better way to do that.
             1443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
             StringValue("ns3::ConstantRandomVariable[Constant=0]"),
@@ -162,7 +197,7 @@ void fill_on_off_scenarios(
         OnOffScenario(
             indexToNode[0],
             indexToNode[3],
-            p2pInterfaces[2].GetAddress(1), // TODO
+            p2pInterfaces[2].GetAddress(1), // TODO Same as above.
             2443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
             StringValue("ns3::ConstantRandomVariable[Constant=0]"),
@@ -174,7 +209,7 @@ void fill_on_off_scenarios(
         OnOffScenario(
             indexToNode[0],
             indexToNode[31],
-            p2pInterfaces[5].GetAddress(1), // TODO
+            p2pInterfaces[5].GetAddress(1), // TODO Same as above.
             3443,
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -186,7 +221,7 @@ void fill_on_off_scenarios(
         OnOffScenario(
             indexToNode[0],
             indexToNode[11],
-            p2pInterfaces[4].GetAddress(1), // TODO
+            p2pInterfaces[4].GetAddress(1), // TODO Same as above.
             4443,
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -204,7 +239,7 @@ void fill_on_off_scenarios(
         OnOffScenario(
             indexToNode[3],
             indexToNode[22],
-            northWifiInterfaces[0].GetAddress(1), // TODO
+            northWifiInterfaces[0].GetAddress(1), // TODO Same as above.
             5443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
@@ -221,7 +256,7 @@ void fill_on_off_scenarios(
         OnOffScenario(
             indexToNode[1],
             indexToNode[42],
-            southWifiInterfaces[0].GetAddress(1), // TODO
+            southWifiInterfaces[0].GetAddress(1), // TODO Same as above.
             6443,
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -233,12 +268,13 @@ void fill_on_off_scenarios(
     cout << "\n";
     southCsmaInterfaces[0].GetAddress(1).Print(cout);
     cout << "\n";
+    cout << "-----\n";
 
     scenarios.push_back(
         OnOffScenario(
             indexToNode[2],
             indexToNode[33],
-            southCsmaInterfaces[0].GetAddress(1), // TODO
+            southCsmaInterfaces[0].GetAddress(1), // TODO Same as above.
             7443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -247,9 +283,10 @@ void fill_on_off_scenarios(
             Seconds(30)));
 }
 
-void setup_on_off_application(vector<OnOffScenario> &scenarios,
-                              vector<ApplicationContainer> &sourceApps,
-                              vector<ApplicationContainer> &sinkApps)
+void setup_on_off_application(
+    vector<OnOffScenario> &scenarios,
+    vector<ApplicationContainer> &sourceApps,
+    vector<ApplicationContainer> &sinkApps)
 {
     for (OnOffScenario &s : scenarios)
     {
@@ -271,6 +308,25 @@ void setup_on_off_application(vector<OnOffScenario> &scenarios,
     }
 }
 
+double time_snt, time_rcv;
+
+void udpEchoClientTxTrace(string context, Ptr<const Packet> packet)
+{
+    time_snt = Now().GetSeconds();
+    cout << "context, " << context << "\n";
+    cout << "udp echo client Tx Trace, " << time_snt << "\n";
+    cout << "-----\n";
+}
+
+void udpEchoClientRxTrace(string context, Ptr<const Packet> packet)
+{
+    time_rcv = Now().GetSeconds();
+    cout << "context, " << context << "\n";
+    cout << "udp echo client Rx Trace, " << time_rcv << "\n";
+    cout << "RTT = " << time_rcv - time_snt << " seconds\n";
+    cout << "-----\n";
+}
+
 void setup_udp_echo_application(
     vector<Ipv4InterfaceContainer> &p2pInterfaces,
     vector<Ipv4InterfaceContainer> &northCsmaInterfaces,
@@ -281,10 +337,15 @@ void setup_udp_echo_application(
     vector<ApplicationContainer> &udpClientApps,
     vector<ApplicationContainer> &udpServerApps)
 {
-    UdpEchoServerHelper echoServerHelper(5432);
-    ApplicationContainer serverApp = echoServerHelper.Install(indexToNode[42]);
-    serverApp.Start(Seconds(1.0));
-    serverApp.Stop(Seconds(6.0));
+    uint16_t port = 5432;
+    Ptr<Node> n42 = indexToNode[42];
+    Time start = Seconds(1.0);
+    Time end = Seconds(10.0);
+
+    UdpEchoServerHelper echoServerHelper(port);
+    ApplicationContainer serverApp = echoServerHelper.Install(n42);
+    serverApp.Start(start);
+    serverApp.Stop(end);
     udpServerApps.push_back(serverApp);
 
     cout << "-----\n";
@@ -292,16 +353,23 @@ void setup_udp_echo_application(
     cout << "\n";
     southWifiInterfaces[0].GetAddress(1).Print(cout);
     cout << "\n";
+    cout << "-----\n";
 
-    UdpEchoClientHelper echoClientHelper(southWifiInterfaces[0].GetAddress(1), 5432);
+    UdpEchoClientHelper echoClientHelper(southWifiInterfaces[0].GetAddress(1), port);
     echoClientHelper.SetAttribute("MaxPackets", UintegerValue(1));
     echoClientHelper.SetAttribute("Interval", TimeValue(Seconds(1.0)));
     echoClientHelper.SetAttribute("PacketSize", UintegerValue(1024));
 
-    ApplicationContainer clientApp = echoClientHelper.Install(indexToNode[13]);
-    clientApp.Start(Seconds(1.0));
-    clientApp.Stop(Seconds(6.0));
+    Ptr<Node> n13 = indexToNode[13];
+    ApplicationContainer clientApp = echoClientHelper.Install(n13);
+    clientApp.Start(start);
+    clientApp.Stop(end);
     udpClientApps.push_back(clientApp);
+
+    string txPath = "/NodeList/" + to_string(n13->GetId()) + "/ApplicationList/*/$ns3::UdpEchoClient/Tx";
+    string rxPath = "/NodeList/" + to_string(n13->GetId()) + "/ApplicationList/*/$ns3::UdpEchoClient/Rx";
+    Config::Connect(txPath, MakeCallback(&udpEchoClientTxTrace));
+    Config::Connect(rxPath, MakeCallback(&udpEchoClientRxTrace));
 }
 
 void setup_p2p(
@@ -333,14 +401,15 @@ void setup_p2p(
     }
 }
 
-void setup_csma(NodeContainer &nodes,
-                Ptr<Node> &gateway,
-                vector<NetDeviceContainer> &devices,
-                vector<Ipv4InterfaceContainer> &interfaces,
-                StringValue dataRate,
-                TimeValue delay,
-                string network,
-                string mask)
+void setup_csma(
+    NodeContainer &nodes,
+    Ptr<Node> &gateway,
+    vector<NetDeviceContainer> &devices,
+    vector<Ipv4InterfaceContainer> &interfaces,
+    StringValue dataRate,
+    TimeValue delay,
+    string network,
+    string mask)
 {
     nodes.Add(gateway);
 
@@ -360,24 +429,26 @@ void setup_csma(NodeContainer &nodes,
 
 void setup_mobility(MobilityHelper &mobilityHelper)
 {
-    mobilityHelper.SetPositionAllocator("ns3::GridPositionAllocator",
-                                        "MinX", DoubleValue(0.0),
-                                        "MinY", DoubleValue(0.0),
-                                        "DeltaX", DoubleValue(5.0),
-                                        "DeltaY", DoubleValue(10.0),
-                                        "GridWidth", UintegerValue(3),
-                                        "LayoutType", StringValue("RowFirst"));
+    mobilityHelper.SetPositionAllocator(
+        "ns3::GridPositionAllocator",
+        "MinX", DoubleValue(0.0),
+        "MinY", DoubleValue(0.0),
+        "DeltaX", DoubleValue(5.0),
+        "DeltaY", DoubleValue(10.0),
+        "GridWidth", UintegerValue(3),
+        "LayoutType", StringValue("RowFirst"));
     mobilityHelper.SetMobilityModel("ns3::ConstantPositionMobilityModel");
 }
 
-void setup_wifi(NodeContainer &stationNodes,
-                Ptr<Node> &accessPointNode,
-                vector<NetDeviceContainer> &devices,
-                vector<Ipv4InterfaceContainer> &interfaces,
-                MobilityHelper &mobilityHelper,
-                Ssid ssid,
-                string network,
-                string mask)
+void setup_wifi(
+    NodeContainer &stationNodes,
+    Ptr<Node> &accessPointNode,
+    vector<NetDeviceContainer> &devices,
+    vector<Ipv4InterfaceContainer> &interfaces,
+    MobilityHelper &mobilityHelper,
+    Ssid ssid,
+    string network,
+    string mask)
 {
     YansWifiChannelHelper channel = YansWifiChannelHelper::Default();
     YansWifiPhyHelper phy = YansWifiPhyHelper::Default();
@@ -413,26 +484,13 @@ void setup_wifi(NodeContainer &stationNodes,
 int main(int argc, char *argv[])
 {
     bool verbose = true;
-    uint32_t nCsma = 3;
-    uint32_t nWifi = 3;
-    bool tracing = false;
+    bool tracing = true;
 
     CommandLine cmd;
-    cmd.AddValue("nCsma", "Number of \"extra\" CSMA nodes/devices", nCsma);
-    cmd.AddValue("nWifi", "Number of wifi STA devices", nWifi);
     cmd.AddValue("verbose", "Tell echo applications to log if true", verbose);
     cmd.AddValue("tracing", "Enable pcap tracing", tracing);
 
     cmd.Parse(argc, argv);
-
-    // The underlying restriction of 18 is due to the grid position
-    // allocator's configuration; the grid layout will exceed the
-    // bounding box if more than 18 nodes are provided.
-    if (nWifi > 18)
-    {
-        std::cout << "nWifi should be 18 or less; otherwise grid layout exceeds the bounding box" << std::endl;
-        return 1;
-    }
 
     if (verbose)
     {
@@ -561,7 +619,7 @@ int main(int argc, char *argv[])
                                udpClientApps,
                                udpServerApps);
 
-    // Ipv4GlobalRoutingHelper::PopulateRoutingTables();
+    Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
     Simulator::Stop(Seconds(simulationPeriod));
     Simulator::Run();
