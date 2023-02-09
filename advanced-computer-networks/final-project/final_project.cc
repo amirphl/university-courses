@@ -54,18 +54,20 @@ class OnOffScenario
 {
 public:
     Ptr<Node> source;
+    Ptr<Node> sink;
     Ipv4Address sinkIP;
     uint16_t sinkPort;
     StringValue onTime, offTime;
     DataRate dataRate;
     Time start, end;
 
-    OnOffScenario(Ptr<Node> source, Ipv4Address sinkIP, uint16_t sinkPort,
+    OnOffScenario(Ptr<Node> source, Ptr<Node> sink, Ipv4Address sinkIP, uint16_t sinkPort,
                   StringValue onTime, StringValue offTime,
                   DataRate dataRate,
                   Time start, Time end)
     {
         this->source = source;
+        this->sink = sink;
         this->sinkIP = sinkIP;
         this->sinkPort = sinkPort,
         this->onTime = onTime;
@@ -147,6 +149,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[0],
+            indexToNode[1],
             p2pInterfaces[0].GetAddress(1), // TODO find a better way to do that.
             1443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -158,6 +161,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[0],
+            indexToNode[3],
             p2pInterfaces[2].GetAddress(1), // TODO
             2443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -169,6 +173,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[0],
+            indexToNode[31],
             p2pInterfaces[5].GetAddress(1), // TODO
             3443,
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
@@ -180,6 +185,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[0],
+            indexToNode[11],
             p2pInterfaces[4].GetAddress(1), // TODO
             4443,
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
@@ -196,6 +202,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[3],
+            indexToNode[22],
             northWifiInterfaces[0].GetAddress(1), // TODO
             5443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -212,6 +219,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[1],
+            indexToNode[42],
             southWifiInterfaces[0].GetAddress(1), // TODO
             6443,
             StringValue("ns3::ConstantRandomVariable[Constant=2]"),
@@ -228,6 +236,7 @@ void fill_on_off_scenarios(
     scenarios.push_back(
         OnOffScenario(
             indexToNode[2],
+            indexToNode[33],
             southCsmaInterfaces[0].GetAddress(1), // TODO
             7443,
             StringValue("ns3::ConstantRandomVariable[Constant=1]"),
@@ -235,6 +244,30 @@ void fill_on_off_scenarios(
             DataRate("4096bps"),
             Seconds(0),
             Seconds(30)));
+}
+
+void setup_on_off_application(vector<OnOffScenario> &scenarios,
+                              vector<ApplicationContainer> &source_apps,
+                              vector<ApplicationContainer> &sink_apps)
+{
+    for (OnOffScenario &s : scenarios)
+    {
+        OnOffHelper onoff("ns3::UdpSocketFactory", Address(InetSocketAddress(s.sinkIP, s.sinkPort)));
+        onoff.SetAttribute("OnTime", s.onTime);
+        onoff.SetAttribute("OffTime", s.offTime);
+        onoff.SetConstantRate(s.dataRate);
+        ApplicationContainer source_app = onoff.Install(s.source);
+        source_app.Start(s.start);
+        source_app.Stop(s.end);
+
+        PacketSinkHelper sinkHelper("ns3::UdpSocketFactory", Address(InetSocketAddress(Ipv4Address::GetAny(), s.sinkPort)));
+        ApplicationContainer sink_app = sinkHelper.Install(s.sink);
+        sink_app.Start(s.start);
+        sink_app.Stop(s.end);
+
+        source_apps.push_back(source_app);
+        sink_apps.push_back(sink_app);
+    }
 }
 
 void setup_p2p(
@@ -343,10 +376,6 @@ void setup_wifi(NodeContainer &stationNodes,
     interfaces.push_back(accessPointInterface);
 }
 
-void setup_on_off_application()
-{
-}
-
 int main(int argc, char *argv[])
 {
     bool verbose = true;
@@ -415,6 +444,8 @@ int main(int argc, char *argv[])
 
     vector<Edge> edges;
     vector<OnOffScenario> scenarios;
+    vector<ApplicationContainer> source_apps;
+    vector<ApplicationContainer> sink_apps;
     unordered_map<int, Ptr<Node>> indexToNode;
 
     create_nodes(p2pNodes,
@@ -482,6 +513,8 @@ int main(int argc, char *argv[])
                           southWifiInterfaces,
                           indexToNode,
                           scenarios);
+
+    setup_on_off_application(scenarios, source_apps, sink_apps);
 
     Simulator::Stop(Seconds(simulationPeriod));
     Simulator::Run();
