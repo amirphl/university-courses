@@ -481,6 +481,49 @@ void setup_wifi(
     interfaces.push_back(accessPointInterface);
 }
 
+void setup_link_failure(unordered_map<int, Ptr<Node>> &indexToNode)
+{
+    Ptr<Node> n0 = indexToNode[0];
+    Ptr<Node> n1 = indexToNode[1];
+    Ptr<Node> n2 = indexToNode[2];
+    Ptr<Node> n3 = indexToNode[3];
+    Ptr<Ipv4> n0_ipv4 = n0->GetObject<Ipv4>();
+    Ptr<Ipv4> n1_ipv4 = n1->GetObject<Ipv4>();
+    Ptr<Ipv4> n2_ipv4 = n2->GetObject<Ipv4>();
+    Ptr<Ipv4> n3_ipv4 = n3->GetObject<Ipv4>();
+
+    uint32_t n0n1Index = 1;
+    uint32_t n1n0Index = 1;
+    uint32_t n0n2Index = 2;
+    uint32_t n2n0Index = 1;
+    uint32_t n0n3Index = 3;
+    uint32_t n3n0Index = 1;
+
+    cout << "-------\n";
+    cout << "Remove n0 --- > n1: " << (n0_ipv4->GetAddress(n0n1Index, 0)).GetLocal() << "\n";
+    cout << "Remove n1 --- > n0: " << (n1_ipv4->GetAddress(n1n0Index, 0)).GetLocal() << "\n";
+    cout << "Remove n0 --- > n2: " << (n0_ipv4->GetAddress(n0n2Index, 0)).GetLocal() << "\n";
+    cout << "Remove n2 --- > n0: " << (n2_ipv4->GetAddress(n2n0Index, 0)).GetLocal() << "\n";
+    cout << "Remove n0 --- > n3: " << (n0_ipv4->GetAddress(n0n3Index, 0)).GetLocal() << "\n";
+    cout << "Remove n3 --- > n0: " << (n3_ipv4->GetAddress(n3n0Index, 0)).GetLocal() << "\n";
+    cout << "-------\n";
+
+    Simulator::Schedule(Seconds(5), &Ipv4::SetDown, n0_ipv4, n0n1Index);
+    Simulator::Schedule(Seconds(10), &Ipv4::SetUp, n0_ipv4, n0n1Index);
+    Simulator::Schedule(Seconds(5), &Ipv4::SetDown, n1_ipv4, n1n0Index);
+    Simulator::Schedule(Seconds(10), &Ipv4::SetUp, n1_ipv4, n1n0Index);
+
+    Simulator::Schedule(Seconds(10), &Ipv4::SetDown, n0_ipv4, n0n2Index);
+    Simulator::Schedule(Seconds(12), &Ipv4::SetUp, n0_ipv4, n0n2Index);
+    Simulator::Schedule(Seconds(10), &Ipv4::SetDown, n2_ipv4, n2n0Index);
+    Simulator::Schedule(Seconds(12), &Ipv4::SetUp, n2_ipv4, n2n0Index);
+
+    Simulator::Schedule(Seconds(15), &Ipv4::SetDown, n0_ipv4, n0n3Index);
+    Simulator::Schedule(Seconds(18), &Ipv4::SetUp, n0_ipv4, n0n3Index);
+    Simulator::Schedule(Seconds(15), &Ipv4::SetDown, n3_ipv4, n3n0Index);
+    Simulator::Schedule(Seconds(18), &Ipv4::SetUp, n3_ipv4, n3n0Index);
+}
+
 int main(int argc, char *argv[])
 {
     bool verbose = true;
@@ -618,6 +661,8 @@ int main(int argc, char *argv[])
                                indexToNode,
                                udpClientApps,
                                udpServerApps);
+
+    setup_link_failure(indexToNode);
 
     Ipv4GlobalRoutingHelper::PopulateRoutingTables();
 
