@@ -59,7 +59,8 @@ public:
     Ipv4Address sinkIP;
     uint16_t sinkPort;
     StringValue onTime, offTime;
-    DataRate dataRate;
+    StringValue dataRate;
+    UintegerValue packetSize;
     Time start, end;
 
     OnOffScenario(
@@ -69,7 +70,8 @@ public:
         uint16_t sinkPort,
         StringValue onTime,
         StringValue offTime,
-        DataRate dataRate,
+        StringValue dataRate,
+        UintegerValue packetSize,
         Time start,
         Time end)
     {
@@ -80,6 +82,7 @@ public:
         this->onTime = onTime;
         this->offTime = offTime;
         this->dataRate = dataRate;
+        this->packetSize = packetSize;
         this->start = start;
         this->end = end;
     }
@@ -188,9 +191,10 @@ void fill_on_off_scenarios(
             indexToNode[1],
             p2pInterfaces[0].GetAddress(1), // TODO Find a better way to do that.
             1443,
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=0]"),
-            DataRate("1500kbps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=0.0]"),
+            StringValue("1500Kbps"),
+            UintegerValue(1500),
             Seconds(2),
             Seconds(30)));
 
@@ -200,9 +204,10 @@ void fill_on_off_scenarios(
             indexToNode[3],
             p2pInterfaces[2].GetAddress(1), // TODO Same as above.
             2443,
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=0]"),
-            DataRate("2500kbps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=0.0]"),
+            StringValue("2500Kbps"),
+            UintegerValue(2500),
             Seconds(5),
             Seconds(25)));
 
@@ -212,9 +217,10 @@ void fill_on_off_scenarios(
             indexToNode[31],
             p2pInterfaces[5].GetAddress(1), // TODO Same as above.
             3443,
-            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            DataRate("4096bps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=2.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("512Bps"),
+            UintegerValue(512),
             Seconds(2),
             Seconds(30)));
 
@@ -224,9 +230,10 @@ void fill_on_off_scenarios(
             indexToNode[11],
             p2pInterfaces[4].GetAddress(1), // TODO Same as above.
             4443,
-            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            DataRate("4096bps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=2.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("512Bps"),
+            UintegerValue(512),
             Seconds(2),
             Seconds(30)));
 
@@ -244,9 +251,10 @@ void fill_on_off_scenarios(
             indexToNode[22],
             northWifiInterfaces[0].GetAddress(1), // TODO Same as above.
             5443,
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-            DataRate("4096bps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=2.0]"),
+            StringValue("512Bps"),
+            UintegerValue(512),
             Seconds(0),
             Seconds(30)));
 
@@ -263,9 +271,10 @@ void fill_on_off_scenarios(
             indexToNode[42],
             southWifiInterfaces[0].GetAddress(1), // TODO Same as above.
             6443,
-            StringValue("ns3::ConstantRandomVariable[Constant=2]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            DataRate("4096bps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=2.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("512Bps"),
+            UintegerValue(512),
             Seconds(0),
             Seconds(30)));
 
@@ -283,9 +292,10 @@ void fill_on_off_scenarios(
             indexToNode[33],
             southCsmaInterfaces[0].GetAddress(1), // TODO Same as above.
             7443,
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            StringValue("ns3::ConstantRandomVariable[Constant=1]"),
-            DataRate("4096bps"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("ns3::ConstantRandomVariable[Constant=1.0]"),
+            StringValue("512Bps"),
+            UintegerValue(512),
             Seconds(0),
             Seconds(30)));
 }
@@ -300,7 +310,8 @@ void setup_on_off_application(
         OnOffHelper onoff("ns3::UdpSocketFactory", Address(InetSocketAddress(s.sinkIP, s.sinkPort)));
         onoff.SetAttribute("OnTime", s.onTime);
         onoff.SetAttribute("OffTime", s.offTime);
-        onoff.SetConstantRate(s.dataRate);
+        onoff.SetAttribute("PacketSize", s.packetSize);
+        onoff.SetAttribute("DataRate", s.dataRate);
         ApplicationContainer sourceApp = onoff.Install(s.source);
         sourceApp.Start(s.start);
         sourceApp.Stop(s.end);
@@ -503,7 +514,7 @@ void setup_wifi(
     interfaces.push_back(stationInterface);
     interfaces.push_back(accessPointInterface);
 
-    string stationPcapFileNamePrefix = PATH_PREFIX + "wifi/" + network + "station-";
+    string stationPcapFileNamePrefix = PATH_PREFIX + "wifi/" + network + "-station-";
     phy.EnablePcap(stationPcapFileNamePrefix, stationDevice, 0);
     string accessPointPcapFileNamePrefix = PATH_PREFIX + "wifi/" + network + "-accesspoint-";
     phy.EnablePcap(accessPointPcapFileNamePrefix, accessPointDevice, 0);
