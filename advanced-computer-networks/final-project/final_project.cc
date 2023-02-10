@@ -569,14 +569,10 @@ void setup_link_failure(unordered_map<int, Ptr<Node>> &indexToNode)
 void parseCMD(
     int argc,
     char *argv[],
-    bool &verbose,
-    bool &tracing,
     string &p2pDateRateCmd,
     uint64_t &p2pDelayMSCmd)
 {
     CommandLine cmd;
-    cmd.AddValue("verbose", "Tell echo applications to log if true", verbose);
-    cmd.AddValue("tracing", "Enable pcap tracing", tracing);
     cmd.AddValue("p2pDateRate", "p2p date rate", p2pDateRateCmd);
     cmd.AddValue("p2pDelay", "p2p delay(ms)", p2pDelayMSCmd);
 
@@ -585,19 +581,14 @@ void parseCMD(
 
 int main(int argc, char *argv[])
 {
-    bool verbose = true;
-    bool tracing = true;
     string p2pDateRateCmd = "2Mbps";
     uint64_t p2pDelayMSCmd = 30;
 
-    parseCMD(argc, argv, verbose, tracing, p2pDateRateCmd, p2pDelayMSCmd);
+    parseCMD(argc, argv, p2pDateRateCmd, p2pDelayMSCmd);
     cout << "p2pDateRateCmd = " << p2pDateRateCmd << ", p2pDelayMSCmd = " << p2pDelayMSCmd << "\n";
 
-    if (verbose)
-    {
-        LogComponentEnable("UdpEchoClientApplication", LOG_LEVEL_INFO);
-        LogComponentEnable("UdpEchoServerApplication", LOG_LEVEL_INFO);
-    }
+    LogComponentEnable("UdpEchoClientApplication", LOG_LEVEL_INFO);
+    LogComponentEnable("UdpEchoServerApplication", LOG_LEVEL_INFO);
 
     StringValue p2pDataRate(p2pDateRateCmd);
     TimeValue p2pDelay(MilliSeconds(p2pDelayMSCmd));
