@@ -34,6 +34,7 @@ using namespace ns3;
 using namespace std;
 
 NS_LOG_COMPONENT_DEFINE("FinalProject");
+const string PATH_PREFIX = "final-project-traces/";
 
 class Edge
 {
@@ -234,6 +235,8 @@ void fill_on_off_scenarios(
     cout << "\n";
     northWifiInterfaces[0].GetAddress(1).Print(cout);
     cout << "\n";
+    northWifiInterfaces[1].GetAddress(0).Print(cout);
+    cout << "\n";
 
     scenarios.push_back(
         OnOffScenario(
@@ -251,6 +254,8 @@ void fill_on_off_scenarios(
     cout << "\n";
     southWifiInterfaces[0].GetAddress(1).Print(cout);
     cout << "\n";
+    southWifiInterfaces[1].GetAddress(0).Print(cout);
+    cout << "\n";
 
     scenarios.push_back(
         OnOffScenario(
@@ -267,6 +272,8 @@ void fill_on_off_scenarios(
     southCsmaInterfaces[0].GetAddress(0).Print(cout);
     cout << "\n";
     southCsmaInterfaces[0].GetAddress(1).Print(cout);
+    cout << "\n";
+    southCsmaInterfaces[0].GetAddress(2).Print(cout);
     cout << "\n";
     cout << "-----\n";
 
@@ -313,6 +320,7 @@ double time_snt, time_rcv;
 void udpEchoClientTxTrace(string context, Ptr<const Packet> packet)
 {
     time_snt = Now().GetSeconds();
+    cout << "-----\n";
     cout << "context, " << context << "\n";
     cout << "udp echo client Tx Trace, " << time_snt << "\n";
     cout << "-----\n";
@@ -321,6 +329,7 @@ void udpEchoClientTxTrace(string context, Ptr<const Packet> packet)
 void udpEchoClientRxTrace(string context, Ptr<const Packet> packet)
 {
     time_rcv = Now().GetSeconds();
+    cout << "-----\n";
     cout << "context, " << context << "\n";
     cout << "udp echo client Rx Trace, " << time_rcv << "\n";
     cout << "RTT = " << time_rcv - time_snt << " seconds\n";
@@ -398,7 +407,15 @@ void setup_p2p(
         links.push_back(link);
         devices.push_back(device);
         interfaces.push_back(interface);
+
+        string pcapFileNamePrefix = PATH_PREFIX + "p2p/" +
+                                    to_string(e.source->GetId()) + "-" +
+                                    to_string(e.sink->GetId()) + "-";
+        p2pHelper.EnablePcap(pcapFileNamePrefix, device, 0);
     }
+
+    AsciiTraceHelper ascii;
+    p2pHelper.EnableAsciiAll(ascii.CreateFileStream(PATH_PREFIX + "p2p/p2p.tr"));
 }
 
 void setup_csma(
@@ -425,6 +442,12 @@ void setup_csma(
 
     devices.push_back(device);
     interfaces.push_back(interface);
+
+    string pcapFileNamePrefix = PATH_PREFIX + "csma/" + network + "-";
+    csmaHelper.EnablePcap(pcapFileNamePrefix, device, 0);
+
+    AsciiTraceHelper ascii;
+    csmaHelper.EnableAsciiAll(ascii.CreateFileStream(PATH_PREFIX + "csma/" + network + ".tr"));
 }
 
 void setup_mobility(MobilityHelper &mobilityHelper)
@@ -459,7 +482,7 @@ void setup_wifi(
 
     WifiMacHelper macHelper;
     macHelper.SetType("ns3::StaWifiMac", "Ssid", SsidValue(ssid),
-                      "ActiveProbing", BooleanValue(false)); // TODO
+                      "ActiveProbing", BooleanValue(false));
 
     NetDeviceContainer stationDevice = wifiHelper.Install(phy, macHelper, stationNodes);
 
@@ -479,6 +502,14 @@ void setup_wifi(
     devices.push_back(accessPointDevice);
     interfaces.push_back(stationInterface);
     interfaces.push_back(accessPointInterface);
+
+    string stationPcapFileNamePrefix = PATH_PREFIX + "wifi/" + network + "station-";
+    phy.EnablePcap(stationPcapFileNamePrefix, stationDevice, 0);
+    string accessPointPcapFileNamePrefix = PATH_PREFIX + "wifi/" + network + "-accesspoint-";
+    phy.EnablePcap(accessPointPcapFileNamePrefix, accessPointDevice, 0);
+
+    AsciiTraceHelper ascii;
+    phy.EnableAsciiAll(ascii.CreateFileStream(PATH_PREFIX + "wifi/" + network + ".tr"));
 }
 
 void setup_link_failure(unordered_map<int, Ptr<Node>> &indexToNode)
