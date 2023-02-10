@@ -573,7 +573,7 @@ void parseCMD(
     uint64_t &p2pDelayMSCmd)
 {
     CommandLine cmd;
-    cmd.AddValue("p2pDateRate", "p2p date rate", p2pDataRateCmd);
+    cmd.AddValue("p2pDataRate", "p2p data rate", p2pDataRateCmd);
     cmd.AddValue("p2pDelay", "p2p delay(ms)", p2pDelayMSCmd);
 
     cmd.Parse(argc, argv);
