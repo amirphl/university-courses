@@ -569,11 +569,11 @@ void setup_link_failure(unordered_map<int, Ptr<Node>> &indexToNode)
 void parseCMD(
     int argc,
     char *argv[],
-    string &p2pDateRateCmd,
+    string &p2pDataRateCmd,
     uint64_t &p2pDelayMSCmd)
 {
     CommandLine cmd;
-    cmd.AddValue("p2pDateRate", "p2p date rate", p2pDateRateCmd);
+    cmd.AddValue("p2pDateRate", "p2p date rate", p2pDataRateCmd);
     cmd.AddValue("p2pDelay", "p2p delay(ms)", p2pDelayMSCmd);
 
     cmd.Parse(argc, argv);
@@ -581,16 +581,16 @@ void parseCMD(
 
 int main(int argc, char *argv[])
 {
-    string p2pDateRateCmd = "2Mbps";
+    string p2pDataRateCmd = "2Mbps";
     uint64_t p2pDelayMSCmd = 30;
 
-    parseCMD(argc, argv, p2pDateRateCmd, p2pDelayMSCmd);
-    cout << "p2pDateRateCmd = " << p2pDateRateCmd << ", p2pDelayMSCmd = " << p2pDelayMSCmd << "\n";
+    parseCMD(argc, argv, p2pDataRateCmd, p2pDelayMSCmd);
+    cout << "p2pDataRateCmd = " << p2pDataRateCmd << ", p2pDelayMSCmd = " << p2pDelayMSCmd << "\n";
 
     LogComponentEnable("UdpEchoClientApplication", LOG_LEVEL_INFO);
     LogComponentEnable("UdpEchoServerApplication", LOG_LEVEL_INFO);
 
-    StringValue p2pDataRate(p2pDateRateCmd);
+    StringValue p2pDataRate(p2pDataRateCmd);
     TimeValue p2pDelay(MilliSeconds(p2pDelayMSCmd));
     StringValue northCsmaDataRate("100Mbps");
     TimeValue northCsmaDelay(NanoSeconds(5600));
