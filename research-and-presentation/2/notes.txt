@@ -1,0 +1,10 @@
+conference evaluation:
+    - 16th (more credit) vs 1th
+    - China vs USA (more credit)
+    - university (science) vs institute (money)
+    - conference program
+    - scientific staffs vs academic staffs vs industrial staffs
+        - find staff credit by searching in google scholar (h-index, ...)
+    - Is conference approved by big ones like IEEE or ACM?
+    - international vs natioal conference
+    - dblp: search by topic name, author name
