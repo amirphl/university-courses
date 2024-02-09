@@ -1,10 +1,19 @@
 conference evaluation:
-    - 16th (more credit) vs 1th
-    - China vs USA (more credit)
-    - university (science) vs institute (money)
-    - conference program
-    - scientific staffs vs academic staffs vs industrial staffs
+    1 - 16th (more credit) vs 1th
+    2 - China vs USA (more credit)
+    3 - university (science) vs institute (money)
+    4 - conference program (schedule)
+        - focus on industry or science?
+    5 - scientific staffs vs academic staffs vs industrial staffs
         - find staff credit by searching in google scholar (h-index, ...)
-    - Is conference approved by big ones like IEEE or ACM?
-    - international vs natioal conference
-    - dblp: search by topic name, author name
+        - h-index
+        - citations
+    6 - Is conference approved by big ones like IEEE or ACM?
+    7 - international vs natioal conference
+    8 - dblp: search by topic name, author name
+
+    6 > 8 > 1
+
+دو  روش:
+1- در DBLP, metaverse رو سرچ میکنیم و افراد معتبر رو پیدا میکنیم. حالا میبینیم که اینا تو کدوم کنفرانس‌ها مقاله میدن.
+۲- از استاد راهنما، اسم افراد معتبر و کنفرانس‌های معتبر رو میپرسیم.

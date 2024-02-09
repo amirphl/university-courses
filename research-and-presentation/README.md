@@ -1,0 +1,3 @@
+# TODO
+- papers
+- slides + notes

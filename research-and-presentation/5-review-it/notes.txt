@@ -1,0 +1,93 @@
+آیا در کارشناسی ارشد میشه مقاله‌ی survey داد؟
+
+
+conf: IEEE, ACM, ..., Sponsor, indexed papers, vol, country, 
+
+publication
+    elsevier
+    taylor and francis
+    springer
+    IEEE
+        ieeexplore
+    ACM
+    emerald
+    wiley
+    indersience
+
+
+index
+    isi
+    dblp
+    scopus
+    sience direct
+
+
+vol, IF, h-index, Q1, sjr, not open access
+
+cited by
+
+
+keywords:
+blockchain
+defi
+decentralized finance 
+airdrop
+cryptocurrecy ico
+ico
+initial coin offering
+nft
+dao
+tokenomic
+https://www.springer.com/journal/42521/updates/20051576
+
+مقالات خوب
+    elsevier
+    https://www.sciencedirect.com/science/article/pii/S2096720922000094
+    https://www.sciencedirect.com/science/article/pii/S2096720921000269
+    https://www.sciencedirect.com/science/article/abs/pii/S0929119922000682
+    https://www.sciencedirect.com/science/article/pii/S0929119920301231
+    https://www.sciencedirect.com/science/article/abs/pii/S0929119920302303
+    https://www.sciencedirect.com/science/article/abs/pii/S092911992300007X
+
+
+
+صرفا مورد علاقمه
+    elsevier
+    https://www.sciencedirect.com/journal/journal-of-parallel-and-distributed-computing/about/aims-and-scope
+    https://www.sciencedirect.com/journal/big-data-research/about/aims-and-scope
+    https://www.sciencedirect.com/journal/parallel-computing/about/aims-and-scope
+    https://www.sciencedirect.com/journal/performance-evaluation/about/aims-and-scope
+
+ژورنال های مرتبط
+    elsevier
+    https://www.sciencedirect.com/journal/blockchain-research-and-applications/about/aims-and-scope
+    https://www.sciencedirect.com/journal/journal-of-corporate-finance/about/aims-and-scope
+
+    springer
+    https://www.springer.com/journal/42521/aims-and-scope
+
+
+
+
+
+
+
+
+
+
+
+
+not downloaded yet:
+https://d1wqtxts1xzle7.cloudfront.net/56152112/SSRN-id3088726-libre.pdf?1521953304=&response-content-disposition=inline%3B+filename%3DInitial_Coin_Offering_and_Platform_Build.pdf&Expires=1682091982&Signature=gHzWdgiz9mdnWOE~sE53E9B-77aoskhYSkn-DNS6OlAmyK6yfOoz7bHck15LgEy2M-GNrqEFdMcsdp9w8cZ15C3EZej75rW8rje~R9fwrarBrdcBa61PuMJhEpTA0dKv0N~tZZCn0eo9Pve15XZHco~gBg~ICw08r5NFB6IrMzcXP0lgfpt6zGmxmL0inJ4RfqbKPp5CSApynqU3ntSQKW9xcw9aT3FqOlu8mBkMx1l005K2dPqTLZKofO5eJFDdkLmzqpPIz1ioY8tK4vJyWDwtLXKqzd6EC4Oovq17NAD8KDYpOXWr3wylzwV1TBWagQp2hoR3U53MrIA-3y40Ow__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA
+https://pubsonline.informs.org/doi/abs/10.1287/mnsc.2022.4312
+https://www.ceeol.com/search/article-detail?id=741945
+https://www.sciencedirect.com/science/article/abs/pii/S0377221722005768
+https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3929815
+https://link.springer.com/article/10.1007/s11187-022-00726-2
+
+
+https://link.springer.com/chapter/10.1007/978-3-030-72624-9_4
+https://link.springer.com/chapter/10.1007/978-3-030-33742-1_19
+https://link.springer.com/chapter/10.1007/978-3-030-31500-9_17
+https://link.springer.com/article/10.1007/s11187-022-00726-2
+
