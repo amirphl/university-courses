@@ -1,0 +1,4 @@
+# TODO
+- homeworks
+- papers
+- resources
