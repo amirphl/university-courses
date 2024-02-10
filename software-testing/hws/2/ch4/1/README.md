@@ -1,0 +1,2 @@
+## To run
+`mvn test`
